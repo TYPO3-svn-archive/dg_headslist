@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>module</type>
+		<description>Language labels for extension 'dg_headslist'</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="pi1_title">heads list</label>
+			<label index="pi1_plus_wiz_description">shows the heads list.</label>
+			<label index="pi_flexform.sheet_template">General adjustments</label>
+			<label index="pi_flexform.template_file_ref"> Template file reference: </label>
+			<label index="pi_flexform.imageWidth">max. Image width: </label>
+			<label index="pi_flexform.imageHeight">max. Image height: </label>
+			<label index="pi_flexform.useTips">use ToolTips (the MooTools Extension are required)</label>
+		</languageKey>
+		<languageKey index="de" type="array">
+			<label index="pi1_title">Kopfliste</label>
+			<label index="pi1_plus_wiz_description">Zeigt die Kopfliste an.</label>
+			<label index="pi_flexform.sheet_template">Allgemeine Einstellungen</label>
+			<label index="pi_flexform.template_file_ref">Template file Referenz: </label>
+			<label index="pi_flexform.imageWidth">Maximale Breite für Bilder: </label>
+			<label index="pi_flexform.imageHeight">Maximale Höhe für Bilder: </label>
+			<label index="pi_flexform.useTips">ToolTips verwenden (benötigt die MooTools Extension)</label>
+		</languageKey>
+	</data>
+</T3locallang>

@@ -11,15 +11,10 @@
 			<label index="tx_dgheadslist_main.pic_active">active pic</label>
 			<label index="tx_dgheadslist_main.pic_inactive">inactive pic</label>
 			<label index="tx_dgheadslist_main.name">name</label>
-			<label index="tx_dgheadslist_main.categorys">categorys</label>
+			<label index="tx_dgheadslist_main.categorys">groups</label>
 			<label index="tx_dgheadslist_main.link_id">sitelink</label>
-			<label index="tx_dgheadslist_cat">heads list categorys</label>
-			<label index="tx_dgheadslist_cat.title">title</label>
-			<label index="tx_dgheadslist.pi_flexform.sheet_template">General adjustments</label>
-			<label index="tx_dgheadslist.pi_flexform.template_file_ref"> Template file reference: </label>
-			<label index="tx_dgheadslist.pi_flexform.imageWidth">max. Image width: </label>
-			<label index="tx_dgheadslist.pi_flexform.imageHeight">max. Image height: </label>
-			<label index="tx_dgheadslist.pi_flexform.useTips">use ToolTips (the MooTools Extension are required)</label>
+			<label index="tx_dgheadslist_cat">heads list groups</label>
+			<label index="tx_dgheadslist_cat.title">group name</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="tt_content.list_type_pi1">Kopfliste</label>
@@ -27,15 +22,10 @@
 			<label index="tx_dgheadslist_main.pic_active">Aktives Bild</label>
 			<label index="tx_dgheadslist_main.pic_inactive">Inaktives Bild</label>
 			<label index="tx_dgheadslist_main.name">Name</label>
-			<label index="tx_dgheadslist_main.categorys">Kategorien</label>
+			<label index="tx_dgheadslist_main.categorys">Gruppen</label>
 			<label index="tx_dgheadslist_main.link_id">Seitenlink</label>
-			<label index="tx_dgheadslist_cat">Kopfliste Kategorie</label>
-			<label index="tx_dgheadslist_cat.title">Titel</label>
-			<label index="tx_dgheadslist.pi_flexform.sheet_template">Allgemeine Einstellungen</label>
-			<label index="tx_dgheadslist.pi_flexform.template_file_ref">Template file Referenz: </label>
-			<label index="tx_dgheadslist.pi_flexform.imageWidth">Maximale Breite für Bilder: </label>
-			<label index="tx_dgheadslist.pi_flexform.imageHeight">Maximale Höhe für Bilder: </label>
-			<label index="tx_dgheadslist.pi_flexform.useTips">ToolTips verwenden (benötigt die MooTools Extension)</label>
+			<label index="tx_dgheadslist_cat">Kopfliste Gruppen</label>
+			<label index="tx_dgheadslist_cat.title">Gruppenname</label>
 		</languageKey>
 	</data>
 </T3locallang>

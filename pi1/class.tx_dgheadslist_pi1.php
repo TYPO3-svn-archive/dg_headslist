@@ -116,17 +116,17 @@ class tx_dgheadslist_pi1 extends tslib_pibase {
 					// if none of the previous is true, you need to include your own library
 					// just as an example in this way
 					} else {
-						$GLOBALS['TSFE']->additionalHeaderData['tx_headdlist_ToolTip_js_mootools'] = '<script type="text/javascript" src="'.t3lib_extMgm::siteRelPath('dg_headslist').'res/alert.js"></script>';
+						$GLOBALS['TSFE']->additionalHeaderData['tx_dgheadslist_ToolTip_js_mootools'] = '<script type="text/javascript" src="'.t3lib_extMgm::siteRelPath('dg_headslist').'res/mootools.js"></script>';
 					}
 					
-      				$GLOBALS["TSFE"]->additionalHeaderData["tx_headdlist_ToolTip_conf"] = "
+      				$GLOBALS["TSFE"]->additionalHeaderData["tx_dgheadslist_ToolTip_conf"] = "
 						<script type=\"text/javascript\">
 							window.addEvent('domready', function() {
 								var myTips = new Tips($$('.$tipsclass'));
 							});
 						</script>
 					";
-					$GLOBALS['TSFE']->additionalHeaderData['tx_headdlist_ToolTip_css'] = '<link rel="stylesheet" href="'.t3lib_extMgm::siteRelPath('dg_headslist').'res/tx_dgheadslist_ToolTips.css" type="text/css" media="screen" />';
+					$GLOBALS['TSFE']->additionalHeaderData['tx_dgheadslist_ToolTip_css'] = '<link rel="stylesheet" href="'.t3lib_extMgm::siteRelPath('dg_headslist').'res/tx_dgheadslist_ToolTips.css" type="text/css" media="screen" />';
       			} // ende ToolTips
       			
        			$picture = $this->cObj->IMAGE($conf["picture."]);
@@ -172,7 +172,6 @@ class tx_dgheadslist_pi1 extends tslib_pibase {
 		//return "Hello World";
 	}
 }
-
 
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/dg_headslist/pi1/class.tx_dgheadslist_pi1.php'])	{

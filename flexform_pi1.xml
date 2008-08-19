@@ -3,13 +3,13 @@
 	<s_general>
 		<ROOT>
 			<TCEforms>
-				<sheetTitle>LLL:EXT:dg_headslist/locallang_db.php:tx_dgheadslist.pi_flexform.sheet_template</sheetTitle>
+				<sheetTitle>LLL:EXT:dg_headslist/locallang.xml:pi_flexform.sheet_template</sheetTitle>
 			</TCEforms>
 			<type>array</type>
 			<el>
 				<template_file>
 					<TCEforms>
-						<label>LLL:EXT:dg_headslist/locallang_db.php:tx_dgheadslist.pi_flexform.template_file_ref</label>
+						<label>LLL:EXT:dg_headslist/locallang.xml:pi_flexform.template_file_ref</label>
 						<config>
 							<type>input</type>
 							<eval>trim</eval>
@@ -32,7 +32,7 @@
 				</template_file>
 				<imageMaxWidth>
 					<TCEforms>
-						<label>LLL:EXT:dg_headslist/locallang_db.php:tx_dgheadslist.pi_flexform.imageWidth</label>
+						<label>LLL:EXT:dg_headslist/locallang.xml:pi_flexform.imageWidth</label>
 						<config>
 							<type>input</type>
 							<eval>num</eval>
@@ -43,7 +43,7 @@
 				</imageMaxWidth>
 				<imageMaxHeight>
 					<TCEforms>
-						<label>LLL:EXT:dg_headslist/locallang_db.php:tx_dgheadslist.pi_flexform.imageHeight</label>
+						<label>LLL:EXT:dg_headslist/locallang.xml:pi_flexform.imageHeight</label>
 						<config>
 							<type>input</type>
 							<eval>num</eval>
@@ -54,7 +54,7 @@
 				</imageMaxHeight>
 				<useToolTips>
 					<TCEforms>
-						<label>LLL:EXT:dg_headslist/locallang_db.php:tx_dgheadslist.pi_flexform.useTips</label>
+						<label>LLL:EXT:dg_headslist/locallang.xml:pi_flexform.useTips</label>
 						<config>
 							<type>check</type>
 						</config>

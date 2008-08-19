@@ -11,7 +11,7 @@ t3lib_extMgm::addPlugin(array('LLL:EXT:dg_headslist/locallang_db.xml:tt_content.
 
 t3lib_extMgm::addStaticFile($_EXTKEY,"pi1/static/","heads list");
 
-// NOTE: Be sure to change sampleflex to the correct directory name of your extension!                    // for flexform
+// NOTE: Be sure to change sampleflex to the correct directory name of your extension!                   // for flexform
 t3lib_extMgm::addPiFlexFormValue($_EXTKEY.'_pi1', 'FILE:EXT:dg_headslist/flexform_pi1.xml');             // for flexform
 
 t3lib_extMgm::allowTableOnStandardPages('tx_dgheadslist_main');
@@ -64,4 +64,6 @@ $TCA["tx_dgheadslist_cat"] = array (
 		"fe_admin_fieldList" => "sys_language_uid, l18n_parent, l18n_diffsource, hidden, title",
 	)
 );
+
+if (TYPO3_MODE=="BE")	$TBE_MODULES_EXT["xMOD_db_new_content_el"]["addElClasses"]["tx_dgheadslist_pi1_wizicon"] = t3lib_extMgm::extPath($_EXTKEY).'pi1/class.tx_dgheadslist_pi1_wizicon.php';
 ?>
