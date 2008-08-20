@@ -48,7 +48,7 @@ class tx_dgheadslist_pi1 extends tslib_pibase {
 		$this->conf=$conf;
 		$this->pi_setPiVarDefaults();
 		$this->pi_loadLL();
-		$this->pi_USER_INT_obj=1;	// Configuring so caching is not expected. This value means that no cHash params are ever set. We do this, because it's a USER_INT object!
+		$this->pi_USER_INT_obj=0;	// Configuring so caching is not expected. This value means that no cHash params are ever set. We do this, because it's a USER_INT object!
 	
 		// Variablen setzen
 		$content="";
@@ -89,10 +89,20 @@ class tx_dgheadslist_pi1 extends tslib_pibase {
 		$headslistPageId = $conf["headslistPageId"];
 		if ($headslistPageId == "") $headslistPageId=$GLOBALS["TSFE"]->id;
 		
+		
+		// Get Parameter auslesen
+		$link_vars = t3lib_div::GPvar($this->prefixId);
+		$group = $link_vars['group'];
+		
+		
 		// Die Datenbankabfrage inkl. UnterstŸtzung von Datenbankabstraktion
 		// Abfrage fŸr die Bilder
-		$res = $GLOBALS["TYPO3_DB"]->exec_SELECTquery("name, pic_active, pic_inactive, link_id, categorys", "tx_dgheadslist_main", "deleted = 0 AND hidden = 0 AND pid = '".$headslistPageId."'", "sorting");
-			
+		if ($group == "") {
+			$res = $GLOBALS["TYPO3_DB"]->exec_SELECTquery("name, pic_active, pic_inactive, link_id, categorys", "tx_dgheadslist_main", "deleted = 0 AND hidden = 0 AND pid = '".$headslistPageId."'", "sorting");
+		} else {
+			$res = $GLOBALS["TYPO3_DB"]->exec_SELECTquery("name, pic_active, pic_inactive, link_id", "tx_dgheadslist_main", "deleted = 0 AND hidden = 0 AND (categorys = '".$group."' OR categorys like ('".$group.",%') OR categorys like ('%,".$group."') OR categorys like ('%,".$group.",%')) AND pid = '".$headslistPageId."'", "sorting");	
+		}
+		
 			while ($row = $GLOBALS["TYPO3_DB"]->sql_fetch_assoc($res)) {
 				
 				// Das Bild auslesen und verarbeiten
@@ -144,12 +154,13 @@ class tx_dgheadslist_pi1 extends tslib_pibase {
 		
 		
 		// Kategorie Abfrage
-		$cat = $GLOBALS["TYPO3_DB"]->exec_SELECTquery("title", "tx_dgheadslist_cat", "deleted = 0 AND hidden = 0 AND pid = '".$headslistPageId."'", "sorting");
+		$cat = $GLOBALS["TYPO3_DB"]->exec_SELECTquery("title, uid", "tx_dgheadslist_cat", "deleted = 0 AND hidden = 0 AND pid = '".$headslistPageId."'", "sorting");
 		//$cat = $GLOBALS["TYPO3_DB"]->exec_SELECTquery("title", "tx_dgheadslist_cat", "deleted = 0 AND hidden = 0 AND pid = '".$headslistPageId."' AND sys_language_uid = '".$GLOBALS["TSFE"]->config["config"]["sys_language_uid"]."'", "sorting");
 
 			while ($row = $GLOBALS["TYPO3_DB"]->sql_fetch_assoc($cat)) {
 				
-				$marker["###CATEGORYS###"] = $row["title"];
+				$marker["###CATEGORYS###"] = $this->pi_linkTP($row["title"],array($this->prefixId."[group]" => $row["uid"]));
+				//$marker["###CATEGORYS###"] = $row["title"];
 				
 				// Den Teilbereich ###CATEGORYS### und das Array miteinander "vereinen"
 				$categorys .= $this->cObj->substituteMarkerArrayCached($tmpl_category, $marker);
@@ -158,7 +169,8 @@ class tx_dgheadslist_pi1 extends tslib_pibase {
 		// Letztmalig den umhŸllenden Teilberich ersetzen und das Ergebnis ausgeben
 		//$record = $this->cObj->substituteSubpart($tmpl, "###RECORD###", $record);
 		//$categorys = $this->cObj->substituteSubpart($tmpl, "###CATEGORY###", $categorys);
-
+			
+			
 		// Kategorien nur zeigen wenn Kategorien vorhanden sind
 		if (isset($categorys) && !empty($categorys)) {
 			$content = $this->cObj->substituteSubpart($tmpl_rec, "###RECORD###", $record).$this->cObj->substituteSubpart($tmpl_cat, "###CATEGORY###", $categorys);
@@ -169,7 +181,7 @@ class tx_dgheadslist_pi1 extends tslib_pibase {
 		
 		$content = $this->cObj->substituteSubpart($tmpl_main, "###MAIN###", $content);
 		return $content;
-		//return "Hello World";
+		//return $group;
 	}
 }
 

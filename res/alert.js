@@ -1,1 +1,0 @@
-function Box(){alert("mein anzuzeigender Text");}
