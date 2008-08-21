@@ -13,11 +13,12 @@ CREATE TABLE tx_dgheadslist_main (
 	sorting int(10) DEFAULT '0' NOT NULL,
 	deleted tinyint(4) DEFAULT '0' NOT NULL,
 	hidden tinyint(4) DEFAULT '0' NOT NULL,
+	name tinytext NOT NULL,
 	pic_active blob NOT NULL,
 	pic_inactive blob NOT NULL,
-	name tinytext NOT NULL,
 	categorys blob NOT NULL,
 	link_id tinytext NOT NULL,
+	no_tooltip tinyint DEFAULT '0' NOT NULL,
 	
 	PRIMARY KEY (uid),
 	KEY parent (pid)

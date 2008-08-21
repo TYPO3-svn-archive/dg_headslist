@@ -47,6 +47,15 @@ $TCA["tx_dgheadslist_main"] = array (
 				'default' => '0'
 			)
 		),
+		"name" => Array (		
+			"exclude" => 1,		
+			"label" => "LLL:EXT:dg_headslist/locallang_db.xml:tx_dgheadslist_main.name",		
+			"config" => Array (
+				"type" => "input",	
+				"size" => "30",	
+				"eval" => "required",
+			)
+		),
 		"pic_active" => Array (		
 			"exclude" => 1,		
 			"label" => "LLL:EXT:dg_headslist/locallang_db.xml:tx_dgheadslist_main.pic_active",		
@@ -75,15 +84,6 @@ $TCA["tx_dgheadslist_main"] = array (
 				"size" => 1,	
 				"minitems" => 0,
 				"maxitems" => 1,
-			)
-		),
-		"name" => Array (		
-			"exclude" => 1,		
-			"label" => "LLL:EXT:dg_headslist/locallang_db.xml:tx_dgheadslist_main.name",		
-			"config" => Array (
-				"type" => "input",	
-				"size" => "30",	
-				"eval" => "required",
 			)
 		),
 		"categorys" => Array (		
@@ -119,9 +119,17 @@ $TCA["tx_dgheadslist_main"] = array (
 				)
 			)
 		),
+		'no_tooltip' => array (		
+			'exclude' => 1,
+			'label'   => 'LLL:EXT:dg_headslist/locallang_db.xml:tx_dgheadslist_main.no_tooltip',
+			'config'  => array (
+				'type'    => 'check',
+				'default' => '0'
+			)
+		),
 	),
 	"types" => array (
-		"0" => array("showitem" => "sys_language_uid;;;;1-1-1, l18n_parent, l18n_diffsource, hidden;;1, pic_active, pic_inactive, name, categorys, link_id")
+		"0" => array("showitem" => "sys_language_uid;;;;1-1-1, l18n_parent, l18n_diffsource, hidden;;1, name, pic_active, pic_inactive, categorys, link_id, no_tooltip")
 	),
 	"palettes" => array (
 		"1" => array("showitem" => "")

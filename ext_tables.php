@@ -35,7 +35,7 @@ $TCA["tx_dgheadslist_main"] = array (
 		'iconfile'          => t3lib_extMgm::extRelPath($_EXTKEY).'icon_tx_dgheadslist_main.gif',
 	),
 	"feInterface" => array (
-		"fe_admin_fieldList" => "sys_language_uid, l18n_parent, l18n_diffsource, hidden, pic_active, pic_inactive, name, categorys, link_id",
+		"fe_admin_fieldList" => "sys_language_uid, l18n_parent, l18n_diffsource, hidden, name, pic_active, pic_inactive, categorys, link_id, no_tooltip",
 	)
 );
 

@@ -66,6 +66,15 @@ class tx_dgheadslist_pi1 extends tslib_pibase {
 			}
 		}
 		
+		// css einbinden
+		if ($this->conf["main_css"]) {
+			$css = '<link rel="stylesheet" href="'.$this->conf["main_css"].'" type="text/css" media="screen" />';
+		} else {
+			$css = '<link rel="stylesheet" href="'.t3lib_extMgm::siteRelPath('dg_headslist').'res/tx_dgheadslist.css" type="text/css" media="screen" />';
+		}
+
+		$GLOBALS['TSFE']->additionalHeaderData['tx_dgheadslist_css'] = $css;
+		
 		
 		// Die Designvorlage laden
 		$tmpl = $this->cObj->fileResource($conf["templateFile"]);
@@ -97,23 +106,37 @@ class tx_dgheadslist_pi1 extends tslib_pibase {
 		
 		// Die Datenbankabfrage inkl. UnterstŸtzung von Datenbankabstraktion
 		// Abfrage fŸr die Bilder
-		if ($group == "") {
-			$res = $GLOBALS["TYPO3_DB"]->exec_SELECTquery("name, pic_active, pic_inactive, link_id, categorys", "tx_dgheadslist_main", "deleted = 0 AND hidden = 0 AND pid = '".$headslistPageId."'", "sorting");
-		} else {
-			$res = $GLOBALS["TYPO3_DB"]->exec_SELECTquery("name, pic_active, pic_inactive, link_id", "tx_dgheadslist_main", "deleted = 0 AND hidden = 0 AND (categorys = '".$group."' OR categorys like ('".$group.",%') OR categorys like ('%,".$group."') OR categorys like ('%,".$group.",%')) AND pid = '".$headslistPageId."'", "sorting");	
-		}
+		//if ($group == "") {
+			$res = $GLOBALS["TYPO3_DB"]->exec_SELECTquery("name, pic_active, pic_inactive, link_id, categorys, no_tooltip", "tx_dgheadslist_main", "deleted = 0 AND hidden = 0 AND pid = '".$headslistPageId."'", "sorting");
+	//	} else {
+		//	$res = $GLOBALS["TYPO3_DB"]->exec_SELECTquery("name, pic_active, pic_inactive, link_id", "tx_dgheadslist_main", "deleted = 0 AND hidden = 0 AND (categorys = '".$group."' OR categorys like ('".$group.",%') OR categorys like ('%,".$group."') OR categorys like ('%,".$group.",%')) AND pid = '".$headslistPageId."'", "sorting");	
+		//}
 		
 			while ($row = $GLOBALS["TYPO3_DB"]->sql_fetch_assoc($res)) {
 				
-				// Das Bild auslesen und verarbeiten
+			// Das Bild auslesen und verarbeiten
+			if(in_array($group,split(",",$row["categorys"]))) {
 				$conf["picture."]["file"] = $img_pfad . $row["pic_active"];
+			} else {
+				$conf["picture."]["file"] = $img_pfad . $row["pic_inactive"];
+			}
+			
+			if ($group == "") {
+				$conf["picture."]["file"] = $img_pfad . $row["pic_active"];
+			}
+				
 				$conf["picture."]["file."]["maxW"] = ($this->conf["imageMaxWidth"]);
 				$conf["picture."]["file."]["maxH"] = ($this->conf["imageMaxHeight"]);
-      			$conf["picture."]["altText"] = $row["name"];
+      			if ($row["no_tooltip"] == "1") {
+					$conf["picture."]["altText"] = "";      			
+      			} else {
+      				$conf["picture."]["altText"] = $row["name"];
+      			}
+      			
       			
       			// ToolTips einstellungen
       			if ($this->conf["useToolTips"]) {
-      				$tipsclass = "tx_dgheadslist_ToolTips";
+      				$tipsclass = "tx_dgheadslist_ToolTips";  //class for the tooltips
       				$conf["picture."]["params"] = 'class="' . $tipsclass . '"';
       				
       				// checks if t3mootools is loaded
@@ -129,15 +152,22 @@ class tx_dgheadslist_pi1 extends tslib_pibase {
 						$GLOBALS['TSFE']->additionalHeaderData['tx_dgheadslist_ToolTip_js_mootools'] = '<script type="text/javascript" src="'.t3lib_extMgm::siteRelPath('dg_headslist').'res/mootools.js"></script>';
 					}
 					
-      				$GLOBALS["TSFE"]->additionalHeaderData["tx_dgheadslist_ToolTip_conf"] = "
-						<script type=\"text/javascript\">
-							window.addEvent('domready', function() {
-								var myTips = new Tips($$('.$tipsclass'));
-							});
-						</script>
+						
+					if ($this->conf["ToolTip_css"]) {
+						$tipscss = '<link rel="stylesheet" href="'.$this->conf["ToolTip_css"].'" type="text/css" media="screen" />';
+					} 
+					$GLOBALS['TSFE']->additionalHeaderData['tx_dgheadslist_ToolTip_css'] = $tipscss;
+
+					$GLOBALS["TSFE"]->additionalHeaderData["tx_dgheadslist_ToolTip_conf"] = "
+	<script type=\"text/javascript\">
+		window.addEvent('domready', function() {
+			var myTips = new Tips($$('.$tipsclass'));
+		});
+	</script>
 					";
-					$GLOBALS['TSFE']->additionalHeaderData['tx_dgheadslist_ToolTip_css'] = '<link rel="stylesheet" href="'.t3lib_extMgm::siteRelPath('dg_headslist').'res/tx_dgheadslist_ToolTips.css" type="text/css" media="screen" />';
-      			} // ende ToolTips
+      			} 
+      			// ende ToolTips
+      			
       			
        			$picture = $this->cObj->IMAGE($conf["picture."]);
        			
@@ -159,8 +189,11 @@ class tx_dgheadslist_pi1 extends tslib_pibase {
 
 			while ($row = $GLOBALS["TYPO3_DB"]->sql_fetch_assoc($cat)) {
 				
-				$marker["###CATEGORYS###"] = $this->pi_linkTP($row["title"],array($this->prefixId."[group]" => $row["uid"]));
-				//$marker["###CATEGORYS###"] = $row["title"];
+				if ($row["uid"] == $group) {
+					$marker["###CATEGORYS###"] = '<li id="tx_dgheadslist_actLink">'.$row["title"].'</li>';
+				} else {
+					$marker["###CATEGORYS###"] = '<li>'.$this->pi_linkTP($row["title"],array($this->prefixId."[group]" => $row["uid"])).'</li>';
+				}
 				
 				// Den Teilbereich ###CATEGORYS### und das Array miteinander "vereinen"
 				$categorys .= $this->cObj->substituteMarkerArrayCached($tmpl_category, $marker);

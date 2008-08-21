@@ -13,7 +13,6 @@
 						<config>
 							<type>input</type>
 							<eval>trim</eval>
-							<default>EXT:dg_headslist/res/tmpl/headlist.tmpl</default>
 							<wizards type="array">
 								<link type="array">
 									<type>popup</type>
@@ -22,7 +21,7 @@
 									<script>browse_links.php?mode=wizard&amp;act=file</script>
 									<params type="array">
 										<blindLinkOptions>page,url,mail,spec</blindLinkOptions>
-										<allowedExtensions>htm,html,tmpl,tpl</allowedExtensions>
+										<allowedExtensions>tmpl,tmp,html,htm</allowedExtensions>
 									</params>
 									<JSopenParams>height=300,width=500,status=0,menubar=0,scrollbars=1</JSopenParams>
 								</link>
@@ -52,6 +51,38 @@
 						</config>
 					</TCEforms>
 				</imageMaxHeight>
+				<main_css>
+					<TCEforms>
+						<label>LLL:EXT:dg_headslist/locallang.xml:pi_flexform.main_css</label>
+						<config>
+							<type>input</type>
+							<eval>trim</eval>
+							<wizards type="array">
+								<link type="array">
+									<type>popup</type>
+									<title>Link</title>
+									<icon>link_popup.gif</icon>
+									<script>browse_links.php?mode=wizard&amp;act=file</script>
+									<params type="array">
+										<blindLinkOptions>page,url,mail,spec</blindLinkOptions>
+										<allowedExtensions>css</allowedExtensions>
+									</params>
+									<JSopenParams>height=300,width=500,status=0,menubar=0,scrollbars=1</JSopenParams>
+								</link>
+							</wizards>
+						</config>
+					</TCEforms>
+				</main_css>
+			</el>
+		</ROOT>
+	</s_general>
+	<s_tooltip>
+		<ROOT>
+			<TCEforms>
+				<sheetTitle>LLL:EXT:dg_headslist/locallang.xml:pi_flexform.sheet_tooltip</sheetTitle>
+			</TCEforms>
+			<type>array</type>
+			<el>
 				<useToolTips>
 					<TCEforms>
 						<label>LLL:EXT:dg_headslist/locallang.xml:pi_flexform.useTips</label>
@@ -60,8 +91,30 @@
 						</config>
 					</TCEforms>
 				</useToolTips>
+				<ToolTip_css>
+					<TCEforms>
+						<label>LLL:EXT:dg_headslist/locallang.xml:pi_flexform.ToolTip_css</label>
+						<config>
+							<type>input</type>
+							<eval>trim</eval>
+							<wizards type="array">
+								<link type="array">
+									<type>popup</type>
+									<title>Link</title>
+									<icon>link_popup.gif</icon>
+									<script>browse_links.php?mode=wizard&amp;act=file</script>
+									<params type="array">
+										<blindLinkOptions>page,url,mail,spec</blindLinkOptions>
+										<allowedExtensions>css</allowedExtensions>
+									</params>
+									<JSopenParams>height=300,width=500,status=0,menubar=0,scrollbars=1</JSopenParams>
+								</link>
+							</wizards>
+						</config>
+					</TCEforms>
+				</ToolTip_css>
 			</el>
 		</ROOT>
-	</s_general>
+	</s_tooltip>
 </sheets>
 </T3DataStructure>
