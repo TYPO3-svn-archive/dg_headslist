@@ -53,7 +53,7 @@ class tx_dgheadslist_pi1 extends tslib_pibase {
 		// Variablen setzen
 		$content="";
 		$marker = array();
-		$img_pfad = "uploads/tx_dgheadslist/";
+		$extUploadFolder = "uploads/tx_dgheadslist/";
 		
 		// flexform laden
 		$this->pi_initPIflexForm();
@@ -77,10 +77,13 @@ class tx_dgheadslist_pi1 extends tslib_pibase {
 		
 		
 		// Die Designvorlage laden
-		$tmpl = $this->cObj->fileResource($conf["templateFile"]);
-		if ($tmpl == "") $tmpl=$this->cObj->fileResource($this->conf["template_file"]);
-		if ($tmpl == "") $tmpl=$this->cObj->fileResource("EXT:dg_headslist/res/tmpl/headlist.tmpl");
-		
+		//$tmpl = $this->cObj->fileResource($conf["templateFile"]);
+		if ($this->conf["template_file"]) {
+			$tmpl = $this->cObj->fileResource($this->conf["template_file"]);
+		} else {
+			$tmpl = $this->cObj->fileResource("EXT:dg_headslist/res/tmpl/headlist.tmpl");
+		}
+				
 		// Teilbereiche der Designvorlage auslesen fŸr den Wrap
 		$tmpl_main = $this->cObj->getSubpart($tmpl, "###HEADLISTWRAP###");	
 		$tmpl_maindiv = $this->cObj->getSubpart($tmpl_main, "###MAIN###");
@@ -95,7 +98,7 @@ class tx_dgheadslist_pi1 extends tslib_pibase {
 
 		
 		// von welcher ID kommen die EintrŠge
-		$headslistPageId = $conf["headslistPageId"];
+		$headslistPageId = $this->conf["pages"];
 		if ($headslistPageId == "") $headslistPageId=$GLOBALS["TSFE"]->id;
 		
 		
@@ -106,23 +109,23 @@ class tx_dgheadslist_pi1 extends tslib_pibase {
 		
 		// Die Datenbankabfrage inkl. UnterstŸtzung von Datenbankabstraktion
 		// Abfrage fŸr die Bilder
-		//if ($group == "") {
+		if ($this->conf["groupMember"] == "1") {
 			$res = $GLOBALS["TYPO3_DB"]->exec_SELECTquery("name, pic_active, pic_inactive, link_id, categorys, no_tooltip", "tx_dgheadslist_main", "deleted = 0 AND hidden = 0 AND pid = '".$headslistPageId."'", "sorting");
-	//	} else {
-		//	$res = $GLOBALS["TYPO3_DB"]->exec_SELECTquery("name, pic_active, pic_inactive, link_id", "tx_dgheadslist_main", "deleted = 0 AND hidden = 0 AND (categorys = '".$group."' OR categorys like ('".$group.",%') OR categorys like ('%,".$group."') OR categorys like ('%,".$group.",%')) AND pid = '".$headslistPageId."'", "sorting");	
-		//}
+		} else {
+			$res = $GLOBALS["TYPO3_DB"]->exec_SELECTquery("name, pic_active, pic_inactive, link_id", "tx_dgheadslist_main", "deleted = 0 AND hidden = 0 AND (categorys = '".$group."' OR categorys like ('".$group.",%') OR categorys like ('%,".$group."') OR categorys like ('%,".$group.",%')) AND pid = '".$headslistPageId."'", "sorting");	
+		}
 		
 			while ($row = $GLOBALS["TYPO3_DB"]->sql_fetch_assoc($res)) {
 				
 			// Das Bild auslesen und verarbeiten
 			if(in_array($group,split(",",$row["categorys"]))) {
-				$conf["picture."]["file"] = $img_pfad . $row["pic_active"];
+				$conf["picture."]["file"] = $extUploadFolder . $row["pic_active"];
 			} else {
-				$conf["picture."]["file"] = $img_pfad . $row["pic_inactive"];
+				$conf["picture."]["file"] = $extUploadFolder . $row["pic_inactive"];
 			}
 			
 			if ($group == "") {
-				$conf["picture."]["file"] = $img_pfad . $row["pic_active"];
+				$conf["picture."]["file"] = $extUploadFolder . $row["pic_active"];
 			}
 				
 				$conf["picture."]["file."]["maxW"] = ($this->conf["imageMaxWidth"]);

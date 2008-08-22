@@ -12,10 +12,11 @@
 			<label index="pi_flexform.template_file_ref"> Template: </label>
 			<label index="pi_flexform.imageWidth">max. Image width: </label>
 			<label index="pi_flexform.imageHeight">max. Image height: </label>
+			<label index="pi_flexform.groupMember">show all data records </label>
 			<label index="pi_flexform.main_css">Own css merge: </label>
 			<label index="pi_flexform.sheet_tooltip">ToolTip</label>
 			<label index="pi_flexform.useTips">use ToolTips </label>
-			<label index="pi_flexform.ToolTip_css">ToolTips css: </label>
+			<label index="pi_flexform.ToolTip_css">Own ToolTips css merge: </label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="pi1_title">Kopfliste</label>
@@ -24,10 +25,11 @@
 			<label index="pi_flexform.template_file_ref">Template: </label>
 			<label index="pi_flexform.imageWidth">Maximale Breite für Bilder: </label>
 			<label index="pi_flexform.imageHeight">Maximale Höhe für Bilder: </label>
+			<label index="pi_flexform.groupMember">Alle Datensätze anzeigen </label>
 			<label index="pi_flexform.main_css">Eigenes css einbinden: </label>
 			<label index="pi_flexform.sheet_tooltip">ToolTip</label>
 			<label index="pi_flexform.useTips">ToolTips verwenden </label>
-			<label index="pi_flexform.ToolTip_css">ToolTips css: </label>
+			<label index="pi_flexform.ToolTip_css">Eigenes ToolTips css einbinden: </label>
 		</languageKey>
 	</data>
 </T3locallang>
