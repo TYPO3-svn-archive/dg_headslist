@@ -18,7 +18,7 @@ CREATE TABLE tx_dgheadslist_main (
 	pic_inactive blob NOT NULL,
 	categorys blob NOT NULL,
 	link_id tinytext NOT NULL,
-	no_tooltip tinyint DEFAULT '0' NOT NULL,
+	no_tooltip tinyint(4) DEFAULT '0' NOT NULL,
 	
 	PRIMARY KEY (uid),
 	KEY parent (pid)

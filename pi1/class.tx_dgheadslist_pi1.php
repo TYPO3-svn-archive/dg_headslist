@@ -118,15 +118,15 @@ class tx_dgheadslist_pi1 extends tslib_pibase {
 			while ($row = $GLOBALS["TYPO3_DB"]->sql_fetch_assoc($res)) {
 				
 			// Das Bild auslesen und verarbeiten
-			if(in_array($group,split(",",$row["categorys"]))) {
-				$conf["picture."]["file"] = $extUploadFolder . $row["pic_active"];
-			} else {
-				$conf["picture."]["file"] = $extUploadFolder . $row["pic_inactive"];
-			}
+				if(in_array($group,split(",",$row["categorys"]))) {
+					$conf["picture."]["file"] = $extUploadFolder . $row["pic_active"];
+				} else {
+					$conf["picture."]["file"] = $extUploadFolder . $row["pic_inactive"];
+				}
 			
-			if ($group == "") {
-				$conf["picture."]["file"] = $extUploadFolder . $row["pic_active"];
-			}
+				if ($group == "") {
+					$conf["picture."]["file"] = $extUploadFolder . $row["pic_active"];
+				}
 				
 				$conf["picture."]["file."]["maxW"] = ($this->conf["imageMaxWidth"]);
 				$conf["picture."]["file."]["maxH"] = ($this->conf["imageMaxHeight"]);
