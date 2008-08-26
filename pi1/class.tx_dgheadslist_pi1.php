@@ -85,15 +85,15 @@ class tx_dgheadslist_pi1 extends tslib_pibase {
 		}
 				
 		// Teilbereiche der Designvorlage auslesen fŸr den Wrap
-		$tmpl_main = $this->cObj->getSubpart($tmpl, "###HEADLISTWRAP###");	
+		$tmpl_main = $this->cObj->getSubpart($tmpl, "###HEADSLISTWRAP###");	
 		$tmpl_maindiv = $this->cObj->getSubpart($tmpl_main, "###MAIN###");
 		
 		// Teilbereiche der Designvorlage auslesen fŸr die Headlist ansich
-		$tmpl_rec = $this->cObj->getSubpart($tmpl, "###HEADLIST###");
+		$tmpl_rec = $this->cObj->getSubpart($tmpl, "###HEADSLIST###");
 		$tmpl_record = $this->cObj->getSubpart($tmpl_rec, "###RECORD###");
 		
 		// Teilbereiche der Designvorlage auslesen fŸr die Kategorien
-		$tmpl_cat = $this->cObj->getSubpart($tmpl, "###HEADLISTCAT###");
+		$tmpl_cat = $this->cObj->getSubpart($tmpl, "###HEADSLISTCAT###");
 		$tmpl_category = $this->cObj->getSubpart($tmpl_cat, "###CATEGORY###");
 
 		
