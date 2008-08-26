@@ -187,15 +187,23 @@ class tx_dgheadslist_pi1 extends tslib_pibase {
 		
 		
 		// Kategorie Abfrage
-		$cat = $GLOBALS["TYPO3_DB"]->exec_SELECTquery("title, uid", "tx_dgheadslist_cat", "deleted = 0 AND hidden = 0 AND pid = '".$headslistPageId."'", "sorting");
-		//$cat = $GLOBALS["TYPO3_DB"]->exec_SELECTquery("title", "tx_dgheadslist_cat", "deleted = 0 AND hidden = 0 AND pid = '".$headslistPageId."' AND sys_language_uid = '".$GLOBALS["TSFE"]->config["config"]["sys_language_uid"]."'", "sorting");
-
+		$cat = $GLOBALS["TYPO3_DB"]->exec_SELECTquery("title, uid, sys_language_uid, l18n_parent", "tx_dgheadslist_cat", "deleted = 0 AND hidden = 0 AND pid = '".$headslistPageId."' AND sys_language_uid = '".$GLOBALS["TSFE"]->sys_language_uid."'", "sorting");
+		
 			while ($row = $GLOBALS["TYPO3_DB"]->sql_fetch_assoc($cat)) {
+				// Gets the translated record if the content language is not the default language
+				/*if ($GLOBALS["TSFE"]->sys_language_content) {
+					$OLmode = ($this->sys_language_mode == "strict"?"hideNonTranslated":"");
+					$row = $GLOBALS["TSFE"]->sys_page->getRecordOverlay("tx_dgheadslist_cat", $row, $GLOBALS["TSFE"]->sys_language_content, $OLmode);
+				}*/
 				
-				if ($row["uid"] == $group) {
+				if ($row["uid"] == $group || $row["l18n_parent"] == $group) {
 					$marker["###CATEGORYS###"] = '<li id="tx_dgheadslist_actLink">'.$row["title"].'</li>';
 				} else {
-					$marker["###CATEGORYS###"] = '<li>'.$this->pi_linkTP($row["title"],array($this->prefixId."[group]" => $row["uid"])).'</li>';
+					if ($row["sys_language_uid"] == "0") {
+						$marker["###CATEGORYS###"] = '<li>'.$this->pi_linkTP($row["title"],array($this->prefixId."[group]" => $row["uid"])).'</li>';
+					} else {
+						$marker["###CATEGORYS###"] = '<li>'.$this->pi_linkTP($row["title"],array($this->prefixId."[group]" => $row["l18n_parent"])).'</li>';
+					}
 				}
 				
 				// Den Teilbereich ###CATEGORYS### und das Array miteinander "vereinen"
