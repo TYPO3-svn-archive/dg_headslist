@@ -1,0 +1,1 @@
+components=Core, Class, Class.Extras, Array, String, Function, Number, Element, Element.Event, Element.Filters, Element.Selectors, Window.DomReady, Window.Size, Tips
