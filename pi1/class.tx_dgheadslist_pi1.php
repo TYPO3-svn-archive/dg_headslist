@@ -106,10 +106,15 @@ class tx_dgheadslist_pi1 extends tslib_pibase {
 		$link_vars = t3lib_div::GPvar($this->prefixId);
 		$group = $link_vars['group'];
 		
+		// default Kategory angeben
+		if ($group == "" && $this->conf["defaultCategory"] ) {
+			$group = $this->conf["defaultCategory"];
+		}
+		
 		
 		// Die Datenbankabfrage inkl. UnterstŸtzung von Datenbankabstraktion
 		// Abfrage fŸr die Bilder
-		if ($this->conf["groupMember"] == "1") {
+		if ($this->conf["groupMember"]) {
 			$res = $GLOBALS["TYPO3_DB"]->exec_SELECTquery("name, pic_active, pic_inactive, link_id, categorys, no_tooltip", "tx_dgheadslist_main", "deleted = 0 AND hidden = 0 AND pid = '".$headslistPageId."'", "sorting");
 		} else {
 			$res = $GLOBALS["TYPO3_DB"]->exec_SELECTquery("name, pic_active, pic_inactive, link_id", "tx_dgheadslist_main", "deleted = 0 AND hidden = 0 AND (categorys = '".$group."' OR categorys like ('".$group.",%') OR categorys like ('%,".$group."') OR categorys like ('%,".$group.",%')) AND pid = '".$headslistPageId."'", "sorting");	
@@ -117,66 +122,46 @@ class tx_dgheadslist_pi1 extends tslib_pibase {
 		
 			while ($row = $GLOBALS["TYPO3_DB"]->sql_fetch_assoc($res)) {
 				
-			// Das Bild auslesen und verarbeiten
-				if(in_array($group,split(",",$row["categorys"]))) {
-					$conf["picture."]["file"] = $extUploadFolder . $row["pic_active"];
+			// Das Bild auslesen und verarbeiten			
+				if (in_array($group,split(",",$row["categorys"]))) {   // Welches Bild soll verwendet werden
+					$picType = "pic_active";
+				} elseif ($group == "") {
+					$picType = "pic_active";
 				} else {
-					$conf["picture."]["file"] = $extUploadFolder . $row["pic_inactive"];
+					$picType = "pic_inactive";
 				}
 			
-				if ($group == "") {
-					$conf["picture."]["file"] = $extUploadFolder . $row["pic_active"];
-				}
-				
+				$conf["picture."]["file"] = $extUploadFolder . $row[$picType];
 				$conf["picture."]["file."]["maxW"] = ($this->conf["imageMaxWidth"]);
 				$conf["picture."]["file."]["maxH"] = ($this->conf["imageMaxHeight"]);
-      			if ($row["no_tooltip"] == "1") {
-					$conf["picture."]["altText"] = "";      			
+   				$conf["picture."]["params"] = 'class="tx_dgheadslist_ToolTips"';
+      			if ($row["no_tooltip"] == "0") {
+	      			if ($this->conf["activeToolTips"] && $picType == "pic_active") {
+    	  				$conf["picture."]["altText"] = $row["name"];
+	      			} elseif ($this->conf["activeToolTips"] && $picType == "pic_inactive") {
+    	  				$conf["picture."]["altText"] = "";
+	      			} elseif ($this->conf["useToolTips"]) {
+						$conf["picture."]["altText"] = $row["name"];
+	      			} else {
+      					$conf["picture."]["altText"] = "";
+      				}
       			} else {
-      				$conf["picture."]["altText"] = $row["name"];
+      				$conf["picture."]["altText"] = "";
       			}
       			
+      			      			
       			
-      			// ToolTips einstellungen
-      			if ($this->conf["useToolTips"]) {
-      				$tipsclass = "tx_dgheadslist_ToolTips";  //class for the tooltips
-      				$conf["picture."]["params"] = 'class="' . $tipsclass . '"';
-      				
-      				// checks if t3mootools is loaded
-					if (t3lib_extMgm::isLoaded("t3mootools"))    {
-   						require_once(t3lib_extMgm::extPath("t3mootools")."class.tx_t3mootools.php");
-					} 	 
-					// if t3mootools is loaded and the custom Library had been created
-					if (defined("T3MOOTOOLS")) {
- 						tx_t3mootools::addMooJS();
-					// if none of the previous is true, you need to include your own library
-					// just as an example in this way
-					} else {
-						$GLOBALS['TSFE']->additionalHeaderData['tx_dgheadslist_ToolTip_js_mootools'] = '<script type="text/javascript" src="'.t3lib_extMgm::siteRelPath('dg_headslist').'res/mootools.js"></script>';
-					}
-					
-						
-					if ($this->conf["ToolTip_css"]) {
-						$tipscss = '<link rel="stylesheet" href="'.$this->conf["ToolTip_css"].'" type="text/css" media="screen" />';
-					} 
-					$GLOBALS['TSFE']->additionalHeaderData['tx_dgheadslist_ToolTip_css'] = $tipscss;
-
-					$GLOBALS["TSFE"]->additionalHeaderData["tx_dgheadslist_ToolTip_conf"] = "
-	<script type=\"text/javascript\">
-		window.addEvent('domready', function() {
-			var myTips = new Tips($$('.$tipsclass'));
-		});
-	</script>
-					";
-      			} 
-      			// ende ToolTips
       			
       			
        			$picture = $this->cObj->IMAGE($conf["picture."]);
        			
        			// Marker belegen
        			if ($row["link_id"]) {
-       				$marker["###BILD###"] = $this->cObj->getTypoLink($picture,$row["link_id"]);
+       				if ($this->conf["activeLink"] && $picType == "pic_inactive") {
+    	  				$marker["###BILD###"] = $picture;
+	      			} else {
+      					$marker["###BILD###"] = $this->cObj->getTypoLink($picture,$row["link_id"]);
+      				}
        			} else {
        				$marker["###BILD###"] = $picture;
        			}
@@ -184,9 +169,39 @@ class tx_dgheadslist_pi1 extends tslib_pibase {
 				$record .= $this->cObj->substituteMarkerArrayCached($tmpl_record, $marker);
 			}
 			
+      		// ToolTips einstellungen
+      		if ($this->conf["useToolTips"]) {   				
+      			// checks if t3mootools is loaded
+				if (t3lib_extMgm::isLoaded("t3mootools"))    {
+   					require_once(t3lib_extMgm::extPath("t3mootools")."class.tx_t3mootools.php");
+				}
+				 	 
+				// if t3mootools is loaded and the custom Library had been created
+				if (defined("T3MOOTOOLS")) {
+ 					tx_t3mootools::addMooJS();
+				// if none of the previous is true, you need to include your own library
+				// just as an example in this way
+				} else {
+					$GLOBALS['TSFE']->additionalHeaderData['tx_dgheadslist_ToolTip_js_mootools'] = '<script type="text/javascript" src="'.t3lib_extMgm::siteRelPath('dg_headslist').'res/mootools.js"></script>';
+				}
+										
+				if ($this->conf["ToolTip_css"]) {
+					$GLOBALS['TSFE']->additionalHeaderData['tx_dgheadslist_ToolTip_css'] = '<link rel="stylesheet" href="'.$this->conf["ToolTip_css"].'" type="text/css" media="screen" />';
+				} 
+
+				$GLOBALS["TSFE"]->additionalHeaderData["tx_dgheadslist_ToolTip_conf"] = "
+	<script type=\"text/javascript\">
+		window.addEvent('domready', function() {
+			var myTips = new Tips($$('.tx_dgheadslist_ToolTips'));
+		});
+	</script>
+					";
+      			} 
+      			// ende ToolTips
 		
 		
 		// Kategorie Abfrage
+		if ($this->conf["categoryList"]) {
 		$cat = $GLOBALS["TYPO3_DB"]->exec_SELECTquery("title, uid, sys_language_uid, l18n_parent", "tx_dgheadslist_cat", "deleted = 0 AND hidden = 0 AND pid = '".$headslistPageId."' AND sys_language_uid = '".$GLOBALS["TSFE"]->sys_language_uid."'", "sorting");
 		
 			while ($row = $GLOBALS["TYPO3_DB"]->sql_fetch_assoc($cat)) {
@@ -209,6 +224,7 @@ class tx_dgheadslist_pi1 extends tslib_pibase {
 				// Den Teilbereich ###CATEGORYS### und das Array miteinander "vereinen"
 				$categorys .= $this->cObj->substituteMarkerArrayCached($tmpl_category, $marker);
 			}
+		}
 			
 		// Letztmalig den umhŸllenden Teilberich ersetzen und das Ergebnis ausgeben
 		//$record = $this->cObj->substituteSubpart($tmpl, "###RECORD###", $record);
