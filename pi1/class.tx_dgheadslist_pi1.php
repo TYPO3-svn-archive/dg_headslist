@@ -158,12 +158,12 @@ class tx_dgheadslist_pi1 extends tslib_pibase {
        			// Marker belegen
        			if ($row["link_id"]) {
        				if ($this->conf["activeLink"] && $picType == "pic_inactive") {
-    	  				$marker["###BILD###"] = $picture;
+    	  				$marker["###PICTURES###"] = $picture;
 	      			} else {
-      					$marker["###BILD###"] = $this->cObj->getTypoLink($picture,$row["link_id"]);
+      					$marker["###PICTURES###"] = $this->cObj->getTypoLink($picture,$row["link_id"]);
       				}
        			} else {
-       				$marker["###BILD###"] = $picture;
+       				$marker["###PICTURES###"] = $picture;
        			}
 				// Den Teilbereich ###RECORD### und das Array miteinander "vereinen"
 				$record .= $this->cObj->substituteMarkerArrayCached($tmpl_record, $marker);

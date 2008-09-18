@@ -9,18 +9,18 @@
 			<label index="pi1_title">heads list</label>
 			<label index="pi1_plus_wiz_description">shows the heads list.</label>
 			<label index="pi_flexform.sheet_template">General adjustments</label>
-			<label index="pi_flexform.template_file_ref"> Template: </label>
+			<label index="pi_flexform.template_file_ref">Template: </label>
 			<label index="pi_flexform.imageWidth">max. Image width: </label>
 			<label index="pi_flexform.imageHeight">max. Image height: </label>
-			<label index="pi_flexform.defaultCategory">choose default category</label>
+			<label index="pi_flexform.defaultCategory">default category</label>
 			<label index="pi_flexform.groupMember">show all data records </label>
 			<label index="pi_flexform.activeLink">links only on active pics</label>
 			<label index="pi_flexform.categoryList">show categoryliste</label>
-			<label index="pi_flexform.main_css">Own css merge: </label>
+			<label index="pi_flexform.main_css">Own css: </label>
 			<label index="pi_flexform.sheet_tooltip">ToolTip</label>
 			<label index="pi_flexform.useTips">use ToolTips </label>
 			<label index="pi_flexform.activeToolTips">ToolTips only for active pics </label>
-			<label index="pi_flexform.ToolTip_css">Own ToolTips css merge: </label>
+			<label index="pi_flexform.ToolTip_css">Own ToolTips css: </label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="pi1_title">Kopfliste</label>
@@ -29,7 +29,7 @@
 			<label index="pi_flexform.template_file_ref">Template: </label>
 			<label index="pi_flexform.imageWidth">Maximale Breite für Bilder: </label>
 			<label index="pi_flexform.imageHeight">Maximale Höhe für Bilder: </label>
-			<label index="pi_flexform.defaultCategory">Standardgruppen ID angeben </label>
+			<label index="pi_flexform.defaultCategory">Standardgruppe</label>
 			<label index="pi_flexform.groupMember">Alle Datensätze anzeigen </label>
 			<label index="pi_flexform.activeLink">Link nur auf aktive Bilder</label>
 			<label index="pi_flexform.categoryList">Gruppenliste zeigen</label>
