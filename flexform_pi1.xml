@@ -87,15 +87,15 @@
 						</config>
 					</TCEforms>
 				</categoryList>
-				<groupMember>
+				<inactiveImages>
 					<TCEforms>
-						<label>LLL:EXT:dg_headslist/locallang.xml:pi_flexform.groupMember</label>
+						<label>LLL:EXT:dg_headslist/locallang.xml:pi_flexform.inactiveImages</label>
 						<config>
 							<default>1</default>
 							<type>check</type>
 						</config>
 					</TCEforms>
-				</groupMember>
+				</inactiveImages>
 				<activeLink>
 					<TCEforms>
 						<label>LLL:EXT:dg_headslist/locallang.xml:pi_flexform.activeLink</label>
@@ -141,6 +141,7 @@
 					<TCEforms>
 						<label>LLL:EXT:dg_headslist/locallang.xml:pi_flexform.useTips</label>
 						<config>
+							<default>1</default>
 							<type>check</type>
 						</config>
 					</TCEforms>
@@ -149,6 +150,7 @@
 					<TCEforms>
 						<label>LLL:EXT:dg_headslist/locallang.xml:pi_flexform.activeToolTips</label>
 						<config>
+							<default>0</default>
 							<type>check</type>
 						</config>
 					</TCEforms>

@@ -22,6 +22,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 class tx_dgheadslist_addCategorysToFlexForm {
+	
 	function addCategorys ($config) {
 		$optionList = array();
 
@@ -37,5 +38,5 @@ class tx_dgheadslist_addCategorysToFlexForm {
 		
 		return $config;
 	}
-}		
+}
 ?>

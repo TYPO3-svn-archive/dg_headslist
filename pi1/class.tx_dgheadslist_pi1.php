@@ -114,7 +114,7 @@ class tx_dgheadslist_pi1 extends tslib_pibase {
 		
 		// Die Datenbankabfrage inkl. UnterstŸtzung von Datenbankabstraktion
 		// Abfrage fŸr die Bilder
-		if ($this->conf["groupMember"]) {
+		if ($this->conf["inactiveImages"]) {
 			$res = $GLOBALS["TYPO3_DB"]->exec_SELECTquery("name, pic_active, pic_inactive, link_id, categorys, no_tooltip", "tx_dgheadslist_main", "deleted = 0 AND hidden = 0 AND pid = '".$headslistPageId."'", "sorting");
 		} else {
 			$res = $GLOBALS["TYPO3_DB"]->exec_SELECTquery("name, pic_active, pic_inactive, link_id", "tx_dgheadslist_main", "deleted = 0 AND hidden = 0 AND (categorys = '".$group."' OR categorys like ('".$group.",%') OR categorys like ('%,".$group."') OR categorys like ('%,".$group.",%')) AND pid = '".$headslistPageId."'", "sorting");	
