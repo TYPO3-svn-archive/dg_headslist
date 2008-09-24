@@ -74,7 +74,7 @@
 						<label>LLL:EXT:dg_headslist/locallang.xml:pi_flexform.defaultCategory</label>
 						<config>
 					    	<type>select</type>
-					    	<itemsProcFunc>tx_dgheadslist_addCategorysToFlexForm->addCategorys</itemsProcFunc>
+					    	<itemsProcFunc>tx_dgheadslist_addCategoriesToFlexForm->addCategories</itemsProcFunc>
 					    </config>
 					</TCEforms>
 				</defaultCategory>
