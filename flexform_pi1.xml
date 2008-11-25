@@ -127,6 +127,15 @@
 						</config>
 					</TCEforms>
 				</main_css>
+				<langOverlay>
+					<TCEforms>
+						<label>LLL:EXT:dg_headslist/locallang.xml:pi_flexform.langOverlay</label>
+						<config>
+							<default>0</default>
+							<type>check</type>
+						</config>
+					</TCEforms>
+				</langOverlay>
 			</el>
 		</ROOT>
 	</s_general>

@@ -111,16 +111,29 @@ class tx_dgheadslist_pi1 extends tslib_pibase {
 			$group = $this->conf["defaultCategory"];
 		}
 		
+		//language overlax also for data records
+		if ($this->conf["langOverlay"]) {
+			$lang_overlay = 'AND sys_language_uid = '.$GLOBALS['TSFE']->config['config']['sys_language_uid'].'';
+		}
 		
 		// Die Datenbankabfrage inkl. UnterstŸtzung von Datenbankabstraktion
 		// Abfrage fŸr die Bilder
 		if ($this->conf["inactiveImages"]) {
-			$res = $GLOBALS["TYPO3_DB"]->exec_SELECTquery("name, pic_active, pic_inactive, link_id, categorys, no_tooltip", "tx_dgheadslist_main", "deleted = 0 AND hidden = 0 AND pid = '".$headslistPageId."'", "sorting");
+			$res = $GLOBALS["TYPO3_DB"]->exec_SELECTquery('name, pic_active, pic_inactive, sys_language_uid, link_id, categorys, no_tooltip', 'tx_dgheadslist_main', 'deleted = 0 AND hidden = 0 AND pid = '.$headslistPageId.' '.$lang_overlay.'', 'sorting');
 		} else {
-			$res = $GLOBALS["TYPO3_DB"]->exec_SELECTquery("name, pic_active, pic_inactive, link_id", "tx_dgheadslist_main", "deleted = 0 AND hidden = 0 AND (categorys = '".$group."' OR categorys like ('".$group.",%') OR categorys like ('%,".$group."') OR categorys like ('%,".$group.",%')) AND pid = '".$headslistPageId."'", "sorting");	
+			$res = $GLOBALS["TYPO3_DB"]->exec_SELECTquery("name, pic_active, pic_inactive, sys_language_uid, link_id", "tx_dgheadslist_main", "deleted = 0 AND hidden = 0 AND (categorys = '".$group."' OR categorys like ('".$group.",%') OR categorys like ('%,".$group."') OR categorys like ('%,".$group.",%')) AND pid = '".$headslistPageId."' '".$lang_overlay."'", "sorting");	
 		}
+		//return $lang_overlay;
+		
+		// sys_language_mode defines what to do if the requested translation is not found
+		$this->sys_language_mode = $this->conf['sys_language_mode']?$this->conf['sys_language_mode'] : $GLOBALS['TSFE']->sys_language_mode;
 		
 			while ($row = $GLOBALS["TYPO3_DB"]->sql_fetch_assoc($res)) {
+			// Gets the translated record if the content language is not the default language
+				if ($GLOBALS["TSFE"]->sys_language_content == $row["sys_language_uid"]) {
+					$OLmode = ($this->sys_language_mode == "strict"?"hideNonTranslated":"");
+					$row = $GLOBALS["TSFE"]->sys_page->getRecordOverlay("tx_dgheadslist_main", $row, $GLOBALS["TSFE"]->sys_language_content, $OLmode);
+				}
 				
 			// Das Bild auslesen und verarbeiten			
 				if (in_array($group,split(",",$row["categorys"]))) {   // Welches Bild soll verwendet werden
@@ -202,14 +215,17 @@ class tx_dgheadslist_pi1 extends tslib_pibase {
 		
 		// Kategorie Abfrage
 		if ($this->conf["categoryList"]) {
-		$cat = $GLOBALS["TYPO3_DB"]->exec_SELECTquery("title, uid, sys_language_uid, l18n_parent", "tx_dgheadslist_cat", "deleted = 0 AND hidden = 0 AND pid = '".$headslistPageId."' AND sys_language_uid = '".$GLOBALS["TSFE"]->sys_language_uid."'", "sorting");
+		$cat = $GLOBALS["TYPO3_DB"]->exec_SELECTquery("title, uid, sys_language_uid, l18n_parent", "tx_dgheadslist_cat", "deleted = 0 AND hidden = 0 AND pid = '".$headslistPageId."' AND sys_language_uid = '".$GLOBALS["TSFE"]->config["config"]["sys_language_uid"]."'", "sorting");
+		
+		// sys_language_mode defines what to do if the requested translation is not found
+		$this->sys_language_mode = $this->conf['sys_language_mode']?$this->conf['sys_language_mode'] : $GLOBALS['TSFE']->sys_language_mode;
 		
 			while ($row = $GLOBALS["TYPO3_DB"]->sql_fetch_assoc($cat)) {
 				// Gets the translated record if the content language is not the default language
-				/*if ($GLOBALS["TSFE"]->sys_language_content) {
+				if ($GLOBALS["TSFE"]->sys_language_content == $row["sys_language_uid"]) {
 					$OLmode = ($this->sys_language_mode == "strict"?"hideNonTranslated":"");
 					$row = $GLOBALS["TSFE"]->sys_page->getRecordOverlay("tx_dgheadslist_cat", $row, $GLOBALS["TSFE"]->sys_language_content, $OLmode);
-				}*/
+				}
 				
 				if ($row["uid"] == $group || $row["l18n_parent"] == $group) {
 					$marker["###CATEGORYS###"] = '<li id="tx_dgheadslist_actLink">'.$row["title"].'</li>';
@@ -241,7 +257,6 @@ class tx_dgheadslist_pi1 extends tslib_pibase {
 		
 		$content = $this->cObj->substituteSubpart($tmpl_main, "###MAIN###", $content);
 		return $content;
-		//return $group;
 	}
 }
 
