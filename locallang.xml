@@ -17,6 +17,7 @@
 			<label index="pi_flexform.activeLink">Links only on active images:</label>
 			<label index="pi_flexform.categoryList">Show categorylist:</label>
 			<label index="pi_flexform.main_css">Own css:</label>
+			<label index="pi_flexform.langOverlay">Use language overlay also for data records:</label>
 			<label index="pi_flexform.sheet_tooltip">ToolTip</label>
 			<label index="pi_flexform.useTips">Use ToolTips:</label>
 			<label index="pi_flexform.activeToolTips">ToolTips only for active images:</label>
@@ -34,6 +35,7 @@
 			<label index="pi_flexform.activeLink">Link nur auf aktive Bilder:</label>
 			<label index="pi_flexform.categoryList">Gruppenliste zeigen:</label>
 			<label index="pi_flexform.main_css">Eigenes css einbinden:</label>
+			<label index="pi_flexform.langOverlay">Mehrsprachigkeit auch für Datensätze verwenden:</label>
 			<label index="pi_flexform.sheet_tooltip">ToolTip</label>
 			<label index="pi_flexform.useTips">ToolTips verwenden:</label>
 			<label index="pi_flexform.activeToolTips">ToolTips nur für aktive Bilder:</label>
