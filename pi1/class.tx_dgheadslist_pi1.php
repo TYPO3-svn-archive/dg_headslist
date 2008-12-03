@@ -99,7 +99,7 @@ class tx_dgheadslist_pi1 extends tslib_pibase {
 		
 		// from which ID are the entries
 		$headslistPageId = $this->conf["pages"];
-		if ($headslistPageId == "") $headslistPageId=$GLOBALS["TSFE"]->id;
+		if ($headslistPageId == "") $headslistPageId = $GLOBALS["TSFE"]->id;
 		
 		
 		// Extract Get parameters
@@ -108,13 +108,15 @@ class tx_dgheadslist_pi1 extends tslib_pibase {
 			settype($link_vars['group'], "int");
 			$group = $link_vars['group'];
 		} else {
-			return "<b>" .$link_vars['group']. "</b> is not a valid group ID";
+			return "ERROR: <b>" .$link_vars['group']. "</b> is not a valid group ID";
 		}
 		
 		
 		// default category
 		if ($group == "" && $this->conf["defaultCategory"] ) {
 			$group = $this->conf["defaultCategory"];
+		} elseif ($group == "0") {
+			$group = "";
 		}
 		
 		//language overlay also for data records
