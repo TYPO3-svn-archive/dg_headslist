@@ -1,5 +1,9 @@
 (add new changes on top of this file)
 
+08-12-08 Dennis Grote  <d.grote@dd-medien.de>
+
+	* added support of workspaces, but changes are not shown in workspace preview.
+
 08-12-01 Dennis Grote  <d.grote@dd-medien.de>
 
 	* added multilanguage support
