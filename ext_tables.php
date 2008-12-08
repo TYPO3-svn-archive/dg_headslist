@@ -15,7 +15,7 @@ t3lib_extMgm::addStaticFile($_EXTKEY,"pi1/static/","heads list");
 t3lib_extMgm::addPiFlexFormValue($_EXTKEY.'_pi1', 'FILE:EXT:dg_headslist/flexform_pi1.xml');             // for flexform
 
 // class for displaying the categorys in flexform.
-include_once(t3lib_extMgm::extPath($_EXTKEY).'class.tx_dgheadslist_addCategorysToFlexForm.php');
+include_once(t3lib_extMgm::extPath($_EXTKEY).'class.tx_dgheadslist_addCategoriesToFlexForm.php');
 
 t3lib_extMgm::allowTableOnStandardPages('tx_dgheadslist_main');
 
@@ -26,6 +26,8 @@ $TCA["tx_dgheadslist_main"] = array (
 		'tstamp'    => 'tstamp',
 		'crdate'    => 'crdate',
 		'cruser_id' => 'cruser_id',
+		'versioningWS' => TRUE, 
+		'origUid' => 't3_origuid',
 		'languageField'            => 'sys_language_uid',	
 		'transOrigPointerField'    => 'l18n_parent',	
 		'transOrigDiffSourceField' => 'l18n_diffsource',	
@@ -52,6 +54,8 @@ $TCA["tx_dgheadslist_cat"] = array (
 		'tstamp'    => 'tstamp',
 		'crdate'    => 'crdate',
 		'cruser_id' => 'cruser_id',
+		'versioningWS' => TRUE, 
+		'origUid' => 't3_origuid',
 		'languageField'            => 'sys_language_uid',	
 		'transOrigPointerField'    => 'l18n_parent',	
 		'transOrigDiffSourceField' => 'l18n_diffsource',	
