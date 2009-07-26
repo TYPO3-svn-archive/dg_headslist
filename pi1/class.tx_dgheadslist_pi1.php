@@ -48,7 +48,7 @@ class tx_dgheadslist_pi1 extends tslib_pibase {
 		$this->conf=$conf;
 		$this->pi_setPiVarDefaults();
 		$this->pi_loadLL();
-		$this->pi_USER_INT_obj=0;	// Configuring so caching is not expected. This value means that no cHash params are ever set. We do this, because it's a USER_INT object!
+		$this->pi_USER_INT_obj=1;	// Configuring so caching is not expected. This value means that no cHash params are ever set. We do this, because it's a USER_INT object!
 	
 		// set Variable
 		$content="";
@@ -66,27 +66,13 @@ class tx_dgheadslist_pi1 extends tslib_pibase {
 			}
 		}
 		
-		// include extension css
-		if ($this->conf["main_css"]) {
-			$css = '<link rel="stylesheet" href="'.$this->conf["main_css"].'" type="text/css" media="screen" />';
-		} else {
-			$css = '<link rel="stylesheet" href="'.t3lib_extMgm::siteRelPath('dg_headslist').'res/tx_dgheadslist.css" type="text/css" media="screen" />';
-		}
-
-		$GLOBALS['TSFE']->additionalHeaderData['tx_dgheadslist_css'] = $css;
-		
 		
 		// load template
-		//$tmpl = $this->cObj->fileResource($conf["templateFile"]);
 		if ($this->conf["template_file"]) {
 			$tmpl = $this->cObj->fileResource($this->conf["template_file"]);
 		} else {
-			$tmpl = $this->cObj->fileResource("EXT:dg_headslist/res/tmpl/headlist.tmpl");
+			$tmpl = $this->cObj->fileResource($conf["templateFile"]);
 		}
-				
-		// Sections of the templates out for the wrap
-		$tmpl_main = $this->cObj->getSubpart($tmpl, "###HEADSLISTWRAP###");	
-		$tmpl_maindiv = $this->cObj->getSubpart($tmpl_main, "###MAIN###");
 		
 		// Sections of the templates out for the headslist
 		$tmpl_rec = $this->cObj->getSubpart($tmpl, "###HEADSLIST###");
@@ -151,40 +137,46 @@ class tx_dgheadslist_pi1 extends tslib_pibase {
 					$picType = "pic_inactive";
 				}
 			
-				$conf["picture."]["file"] = $extUploadFolder . $row[$picType];
-				$conf["picture."]["file."]["maxW"] = ($this->conf["imageMaxWidth"]);
-				$conf["picture."]["file."]["maxH"] = ($this->conf["imageMaxHeight"]);
-   				$conf["picture."]["params"] = 'class="tx_dgheadslist_ToolTips"';
+				$conf["image."]["file"] = $extUploadFolder . $row[$picType];
+				
+				if ($this->conf["imageMaxWidth"]) {
+					$conf["image."]["file."]["maxW"] = ($this->conf["imageMaxWidth"]);
+				}
+				
+				if ($this->conf["imageMaxHeight"]) {
+					$conf["image."]["file."]["maxH"] = ($this->conf["imageMaxHeight"]);
+				}
+				
+   				$conf["image."]["altText"] = $row["name"];
+   				
       			if ($row["no_tooltip"] == "0") {
-	      			if ($this->conf["activeToolTips"] && $picType == "pic_active") {
-    	  				$conf["picture."]["altText"] = $row["name"];
+	      			if ($this->conf["activeToolTips"] && $picType == "pic_active") {  				
+    	  				$conf["image."]["params"] = 'class="'.$this->prefixId.'_ToolTips"';
 	      			} elseif ($this->conf["activeToolTips"] && $picType == "pic_inactive") {
-    	  				$conf["picture."]["altText"] = "";
+    	  				$conf["image."]["params"] = "";
 	      			} elseif ($this->conf["useToolTips"]) {
-						$conf["picture."]["altText"] = $row["name"];
+						$conf["image."]["params"] = 'class="'.$this->prefixId.'_ToolTips"';
 	      			} else {
-      					$conf["picture."]["altText"] = "";
+      					$conf["image."]["params"] = "";
       				}
       			} else {
-      				$conf["picture."]["altText"] = "";
+      				$conf["image."]["params"] = "";
       			}
       			
-      			      			
-      			
-      			
-      			
-       			$picture = $this->cObj->IMAGE($conf["picture."]);
+       			$picture = $this->cObj->IMAGE($conf["image."]);
        			
        			// set markers
        			if ($row["link_id"]) {
        				if ($this->conf["activeLink"] && $picType == "pic_inactive") {
-    	  				$marker["###PICTURES###"] = $picture;
+    	  				$images = $picture;
 	      			} else {
-      					$marker["###PICTURES###"] = $this->cObj->getTypoLink($picture,$row["link_id"]);
+      					$images = $this->cObj->getTypoLink($picture,$row["link_id"]);
       				}
        			} else {
-       				$marker["###PICTURES###"] = $picture;
+       				$images = $picture;
        			}
+       			$images = $this->cObj->wrap($images, $conf['imageWrap']);
+       			$marker["###IMAGES###"] = $images;
 				// Den Teilbereich ###RECORD### und das Array miteinander "vereinen"
 				$record .= $this->cObj->substituteMarkerArrayCached($tmpl_record, $marker);
 			}
@@ -202,20 +194,10 @@ class tx_dgheadslist_pi1 extends tslib_pibase {
 				// if none of the previous is true, you need to include your own library
 				// just as an example in this way
 				} else {
-					$GLOBALS['TSFE']->additionalHeaderData['tx_dgheadslist_ToolTip_js_mootools'] = '<script type="text/javascript" src="'.t3lib_extMgm::siteRelPath('dg_headslist').'res/mootools.js"></script>';
+					$GLOBALS['TSFE']->additionalHeaderData['tx_dgheadslist_ToolTip_js_mootools'] = '<script type="text/javascript" src="'. t3lib_extMgm::siteRelPath('dg_headslist') .'res/mootools.js"></script>';
 				}
-										
-				if ($this->conf["ToolTip_css"]) {
-					$GLOBALS['TSFE']->additionalHeaderData['tx_dgheadslist_ToolTip_css'] = '<link rel="stylesheet" href="'.$this->conf["ToolTip_css"].'" type="text/css" media="screen" />';
-				} 
 
-				$GLOBALS["TSFE"]->additionalHeaderData["tx_dgheadslist_ToolTip_conf"] = "
-	<script type=\"text/javascript\">
-		window.addEvent('domready', function() {
-			var myTips = new Tips($$('.tx_dgheadslist_ToolTips'));
-		});
-	</script>
-					";
+				$GLOBALS["TSFE"]->additionalHeaderData["tx_dgheadslist_ToolTip_conf"] = '<script type="text/javascript">window.addEvent("domready", function() {var myTips = new Tips($$(".'. $this->prefixId .'_ToolTips"));});</script>';
       			} 
       			// ende ToolTips
 		
@@ -235,15 +217,17 @@ class tx_dgheadslist_pi1 extends tslib_pibase {
 				}
 				
 				if ($row["uid"] == $group || $row["l18n_parent"] == $group) {
-					$marker["###CATEGORYS###"] = '<li id="tx_dgheadslist_actLink">'.$row["title"].'</li>';
+					$listItem = $this->cObj->wrap($row["title"], $conf["currentWrap"]);
 				} else {
 					if ($row["sys_language_uid"] == "0") {
-						$marker["###CATEGORYS###"] = '<li>'.$this->pi_linkTP($row["title"],array($this->prefixId."[group]" => $row["uid"])).'</li>';
+						$listItem = $this->cObj->wrap($this->pi_linkTP($row["title"],array($this->prefixId."[group]" => $row["uid"])), $conf["linkWrap"]);
 					} else {
-						$marker["###CATEGORYS###"] = '<li>'.$this->pi_linkTP($row["title"],array($this->prefixId."[group]" => $row["l18n_parent"])).'</li>';
+						$listItem = $this->cObj->wrap($this->pi_linkTP($row["title"],array($this->prefixId."[group]" => $row["l18n_parent"])), $conf["linkWrap"]);
 					}
 				}
-				
+				$listItem = $this->cObj->wrap($listItem, $conf['categoryListItemWrap']);
+				$marker["###CATEGORYS###"] = $listItem;
+
 				// Den Teilbereich ###CATEGORYS### und das Array miteinander "vereinen"
 				$categorys .= $this->cObj->substituteMarkerArrayCached($tmpl_category, $marker);
 			}
@@ -252,18 +236,22 @@ class tx_dgheadslist_pi1 extends tslib_pibase {
 		// Letztmalig den umhŸllenden Teilberich ersetzen und das Ergebnis ausgeben
 		//$record = $this->cObj->substituteSubpart($tmpl, "###RECORD###", $record);
 		//$categorys = $this->cObj->substituteSubpart($tmpl, "###CATEGORY###", $categorys);
-			
-			
+		
 		// show categories only if categories are available
-		if (isset($categorys) && !empty($categorys)) {
-			$content = $this->cObj->substituteSubpart($tmpl_rec, "###RECORD###", $record).$this->cObj->substituteSubpart($tmpl_cat, "###CATEGORY###", $categorys);
+		if (isset($categorys) && !empty($categorys)) {	
+			$categoryList = $this->cObj->wrap($this->cObj->substituteSubpart($tmpl_cat, "###CATEGORY###", $categorys),$conf['categoryListWrap']);
+			$categoryList = $this->cObj->wrap($categoryList, $conf['categoryWrap']);
 		}
 		else {
-			$content = $this->cObj->substituteSubpart($tmpl_rec, "###RECORD###", $record);
+			$categoryList = "";
 		}
 		
-		$content = $this->cObj->substituteSubpart($tmpl_main, "###MAIN###", $content);
-		return $content;
+		$records = $this->cObj->substituteSubpart($tmpl_rec, "###RECORD###", $record);
+		$records = $this->cObj->wrap($records, $conf['recordsWrap']);
+		
+		$content = $records.$categoryList;
+		
+		return $this->pi_wrapInBaseClass($content);
 	}
 }
 

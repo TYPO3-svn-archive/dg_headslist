@@ -10,28 +10,6 @@
 			</TCEforms>
 			<type>array</type>
 			<el>
-				<template_file>
-					<TCEforms>
-						<label>LLL:EXT:dg_headslist/locallang.xml:pi_flexform.template_file_ref</label>
-						<config>
-							<type>input</type>
-							<eval>trim</eval>
-							<wizards type="array">
-								<link type="array">
-									<type>popup</type>
-									<title>Link</title>
-									<icon>link_popup.gif</icon>
-									<script>browse_links.php?mode=wizard&amp;act=file</script>
-									<params type="array">
-										<blindLinkOptions>page,url,mail,spec</blindLinkOptions>
-										<allowedExtensions>tmpl,tmp,html,htm</allowedExtensions>
-									</params>
-									<JSopenParams>height=300,width=500,status=0,menubar=0,scrollbars=1</JSopenParams>
-								</link>
-							</wizards>
-						</config>
-					</TCEforms>
-				</template_file>
 				<imageMaxWidth>
 					<TCEforms>
 						<label>LLL:EXT:dg_headslist/locallang.xml:pi_flexform.imageWidth</label>
@@ -105,9 +83,18 @@
 						</config>
 					</TCEforms>
 				</activeLink>
-				<main_css>
+				<langOverlay>
 					<TCEforms>
-						<label>LLL:EXT:dg_headslist/locallang.xml:pi_flexform.main_css</label>
+						<label>LLL:EXT:dg_headslist/locallang.xml:pi_flexform.langOverlay</label>
+						<config>
+							<default>0</default>
+							<type>check</type>
+						</config>
+					</TCEforms>
+				</langOverlay>
+				<template_file>
+					<TCEforms>
+						<label>LLL:EXT:dg_headslist/locallang.xml:pi_flexform.template_file_ref</label>
 						<config>
 							<type>input</type>
 							<eval>trim</eval>
@@ -119,23 +106,14 @@
 									<script>browse_links.php?mode=wizard&amp;act=file</script>
 									<params type="array">
 										<blindLinkOptions>page,url,mail,spec</blindLinkOptions>
-										<allowedExtensions>css</allowedExtensions>
+										<allowedExtensions>tmpl,tmp,html,htm</allowedExtensions>
 									</params>
 									<JSopenParams>height=300,width=500,status=0,menubar=0,scrollbars=1</JSopenParams>
 								</link>
 							</wizards>
 						</config>
 					</TCEforms>
-				</main_css>
-				<langOverlay>
-					<TCEforms>
-						<label>LLL:EXT:dg_headslist/locallang.xml:pi_flexform.langOverlay</label>
-						<config>
-							<default>0</default>
-							<type>check</type>
-						</config>
-					</TCEforms>
-				</langOverlay>
+				</template_file>
 			</el>
 		</ROOT>
 	</s_general>
@@ -164,28 +142,6 @@
 						</config>
 					</TCEforms>
 				</activeToolTips>
-				<ToolTip_css>
-					<TCEforms>
-						<label>LLL:EXT:dg_headslist/locallang.xml:pi_flexform.ToolTip_css</label>
-						<config>
-							<type>input</type>
-							<eval>trim</eval>
-							<wizards type="array">
-								<link type="array">
-									<type>popup</type>
-									<title>Link</title>
-									<icon>link_popup.gif</icon>
-									<script>browse_links.php?mode=wizard&amp;act=file</script>
-									<params type="array">
-										<blindLinkOptions>page,url,mail,spec</blindLinkOptions>
-										<allowedExtensions>css</allowedExtensions>
-									</params>
-									<JSopenParams>height=300,width=500,status=0,menubar=0,scrollbars=1</JSopenParams>
-								</link>
-							</wizards>
-						</config>
-					</TCEforms>
-				</ToolTip_css>
 			</el>
 		</ROOT>
 	</s_tooltip>
