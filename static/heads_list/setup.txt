@@ -15,15 +15,21 @@ plugin.tx_dgheadslist_pi1 {
 	currentWrap =
 	
 	image = IMAGE
-	image {
-		file = unknown
-		file.maxW =
-		file.maxH =
+	image.file = GIFBUILDER
+	image.file {
+		XY = [10.w],[10.h]
+		format = jpg
+		quality = 100
+		
+		10 = IMAGE
+		10.file = unknown
+		10.file.width =
+		10.file.height =
 	}
 
 	_CSS_DEFAULT_STYLE (
 		.tx_dgheadslist_pi1_rec img { border: 1px solid gray; margin-right: 5px; margin-bottom: 5px; }
-		.tx_dgheadslist_pi1_cat ul { list-style-type: none; }
+		.tx_dgheadslist_pi1_cat ul { list-style-type: none; margin: 0; padding: 0; }
 		.tx_dgheadslist_pi1_cat ul li { display: inline; padding-right: 10px; }
 		.tx_dgheadslist_pi1_cat ul li a { }
 		.tx_dgheadslist_pi1_cat ul li a:hover { text-decoration: underline; }

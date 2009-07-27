@@ -137,18 +137,18 @@ class tx_dgheadslist_pi1 extends tslib_pibase {
 					$picType = "pic_inactive";
 				}
 			
-				$conf["image."]["file"] = $extUploadFolder . $row[$picType];
+				$conf["image."]["file."]["10."]["file"] = $extUploadFolder . $row[$picType];
 				
 				if ($this->conf["imageMaxWidth"]) {
-					$conf["image."]["file."]["maxW"] = ($this->conf["imageMaxWidth"]);
+					$conf["image."]["file."]["10."]["file."]["width"] = ($this->conf["imageMaxWidth"]);
 				}
 				
 				if ($this->conf["imageMaxHeight"]) {
-					$conf["image."]["file."]["maxH"] = ($this->conf["imageMaxHeight"]);
+					$conf["image."]["file."]["10."]["file."]["height"] = ($this->conf["imageMaxHeight"]);
 				}
+
+				$conf["image."]["altText"] = $row["name"];
 				
-   				$conf["image."]["altText"] = $row["name"];
-   				
       			if ($row["no_tooltip"] == "0") {
 	      			if ($this->conf["activeToolTips"] && $picType == "pic_active") {  				
     	  				$conf["image."]["params"] = 'class="'.$this->prefixId.'_ToolTips"';
@@ -163,7 +163,7 @@ class tx_dgheadslist_pi1 extends tslib_pibase {
       				$conf["image."]["params"] = "";
       			}
       			
-       			$picture = $this->cObj->IMAGE($conf["image."]);
+       			$picture = $this->cObj->cObjGetSingle($conf["image"], $conf["image."]);
        			
        			// set markers
        			if ($row["link_id"]) {
