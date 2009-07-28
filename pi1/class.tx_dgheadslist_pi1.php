@@ -36,6 +36,7 @@ class tx_dgheadslist_pi1 extends tslib_pibase {
 	var $prefixId      = 'tx_dgheadslist_pi1';		// Same as class name
 	var $scriptRelPath = 'pi1/class.tx_dgheadslist_pi1.php';	// Path to this script relative to the extension dir.
 	var $extKey        = 'dg_headslist';	// The extension key.
+	var $pi_checkCHash = true;
 	
 	/**
 	 * The main method of the PlugIn
@@ -48,7 +49,7 @@ class tx_dgheadslist_pi1 extends tslib_pibase {
 		$this->conf=$conf;
 		$this->pi_setPiVarDefaults();
 		$this->pi_loadLL();
-		$this->pi_USER_INT_obj=1;	// Configuring so caching is not expected. This value means that no cHash params are ever set. We do this, because it's a USER_INT object!
+		$this->pi_USER_INT_obj=0;	// Configuring so caching is not expected. This value means that no cHash params are ever set. We do this, because it's a USER_INT object!
 	
 		// set Variable
 		$content="";
@@ -220,9 +221,9 @@ class tx_dgheadslist_pi1 extends tslib_pibase {
 					$listItem = $this->cObj->wrap($row["title"], $conf["currentWrap"]);
 				} else {
 					if ($row["sys_language_uid"] == "0") {
-						$listItem = $this->cObj->wrap($this->pi_linkTP($row["title"],array($this->prefixId."[group]" => $row["uid"])), $conf["linkWrap"]);
+						$listItem = $this->cObj->wrap($this->pi_linkTP($row["title"],array($this->prefixId."[group]" => $row["uid"]), 1), $conf["linkWrap"]);
 					} else {
-						$listItem = $this->cObj->wrap($this->pi_linkTP($row["title"],array($this->prefixId."[group]" => $row["l18n_parent"])), $conf["linkWrap"]);
+						$listItem = $this->cObj->wrap($this->pi_linkTP($row["title"],array($this->prefixId."[group]" => $row["l18n_parent"]), 1), $conf["linkWrap"]);
 					}
 				}
 				$listItem = $this->cObj->wrap($listItem, $conf['categoryListItemWrap']);
