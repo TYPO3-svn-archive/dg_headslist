@@ -1,4 +1,7 @@
 plugin.tx_dgheadslist_pi1 {
+	#whatToDisplay = 
+	backPID =
+
 	templateFile = EXT:dg_headslist/res/headslist_templ.html
 	
 	## wraps for the records

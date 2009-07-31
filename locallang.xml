@@ -9,7 +9,7 @@
 			<label index="pi1_title">heads list</label>
 			<label index="pi1_plus_wiz_description">shows the heads list.</label>
 			<label index="pi_flexform.sheet_template">General adjustments</label>
-			<label index="pi_flexform.template_file_ref">Template:</label>
+			<label index="pi_flexform.what_to_display">What to display:</label>
 			<label index="pi_flexform.imageWidth">max. Image width:</label>
 			<label index="pi_flexform.imageHeight">max. Image height:</label>
 			<label index="pi_flexform.defaultCategory">Default category:</label>
@@ -17,6 +17,8 @@
 			<label index="pi_flexform.activeLink">Links only on active images:</label>
 			<label index="pi_flexform.categoryList">Show categorylist:</label>
 			<label index="pi_flexform.langOverlay">Use language overlay also for data records:</label>
+			<label index="pi_flexform.BackPID">PageID to NORMAL: (for CATEGORYLIST)</label>
+			<label index="pi_flexform.template_file_ref">Template:</label>
 			<label index="pi_flexform.sheet_tooltip">ToolTip</label>
 			<label index="pi_flexform.useTips">Use ToolTips:</label>
 			<label index="pi_flexform.activeToolTips">ToolTips only for active images:</label>
@@ -25,7 +27,7 @@
 			<label index="pi1_title">Kopfliste</label>
 			<label index="pi1_plus_wiz_description">Zeigt die Kopfliste an.</label>
 			<label index="pi_flexform.sheet_template">Allgemeine Einstellungen</label>
-			<label index="pi_flexform.template_file_ref">Template:</label>
+			<label index="pi_flexform.what_to_display">Was soll angezeigt werden:</label>
 			<label index="pi_flexform.imageWidth">Maximale Breite für Bilder:</label>
 			<label index="pi_flexform.imageHeight">Maximale Höhe für Bilder:</label>
 			<label index="pi_flexform.defaultCategory">Standardgruppe:</label>
@@ -33,6 +35,8 @@
 			<label index="pi_flexform.activeLink">Link nur auf aktive Bilder:</label>
 			<label index="pi_flexform.categoryList">Gruppenliste zeigen:</label>
 			<label index="pi_flexform.langOverlay">Mehrsprachigkeit auch für Datensätze verwenden:</label>
+			<label index="pi_flexform.BackPID">PageID zu NORMAL: (für CATEGORYLIST)</label>
+			<label index="pi_flexform.template_file_ref">Template:</label>
 			<label index="pi_flexform.sheet_tooltip">ToolTip</label>
 			<label index="pi_flexform.useTips">ToolTips verwenden:</label>
 			<label index="pi_flexform.activeToolTips">ToolTips nur für aktive Bilder:</label>
