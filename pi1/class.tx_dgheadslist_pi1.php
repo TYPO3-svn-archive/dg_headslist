@@ -36,6 +36,7 @@ class tx_dgheadslist_pi1 extends tslib_pibase {
 	var $prefixId      = 'tx_dgheadslist_pi1';		// Same as class name
 	var $scriptRelPath = 'pi1/class.tx_dgheadslist_pi1.php';	// Path to this script relative to the extension dir.
 	var $extKey        = 'dg_headslist';	// The extension key.
+	var $pi_checkCHash = true;
 	
 	/**
 	 * The main method of the PlugIn
@@ -48,7 +49,7 @@ class tx_dgheadslist_pi1 extends tslib_pibase {
 		$this->conf=$conf;
 		$this->pi_setPiVarDefaults();
 		$this->pi_loadLL();
-		$this->pi_USER_INT_obj=1;	// Configuring so caching is not expected. This value means that no cHash params are ever set. We do this, because it's a USER_INT object!
+		$this->pi_USER_INT_obj=0;	// Configuring so caching is not expected. This value means that no cHash params are ever set. We do this, because it's a USER_INT object!
 	
 		// set Variable
 		$content="";
@@ -84,8 +85,11 @@ class tx_dgheadslist_pi1 extends tslib_pibase {
 
 		
 		// from which ID are the entries
-		$headslistPageId = $this->conf["pages"];
-		if ($headslistPageId == "") $headslistPageId = $GLOBALS["TSFE"]->id;
+		if ($this->conf["pages"] == "") {
+			$headslistPageId = $GLOBALS["TSFE"]->id;
+		} else {
+			$headslistPageId = $this->conf["pages"];
+		}
 		
 		
 		// Extract Get parameters
@@ -104,6 +108,10 @@ class tx_dgheadslist_pi1 extends tslib_pibase {
 		} elseif ($group == "0") {
 			$group = "";
 		}
+		
+		
+		// check whether pictures to be displayed
+		if ($this->conf["whatToDisplay"] == "NORMAL" || $conf["whatToDisplay"] == "NORMAL") {
 		
 		//language overlay also for data records
 		if ($this->conf["langOverlay"]) {
@@ -137,18 +145,18 @@ class tx_dgheadslist_pi1 extends tslib_pibase {
 					$picType = "pic_inactive";
 				}
 			
-				$conf["image."]["file"] = $extUploadFolder . $row[$picType];
+				$conf["image."]["file."]["10."]["file"] = $extUploadFolder . $row[$picType];
 				
 				if ($this->conf["imageMaxWidth"]) {
-					$conf["image."]["file."]["maxW"] = ($this->conf["imageMaxWidth"]);
+					$conf["image."]["file."]["10."]["file."]["width"] = ($this->conf["imageMaxWidth"]);
 				}
 				
 				if ($this->conf["imageMaxHeight"]) {
-					$conf["image."]["file."]["maxH"] = ($this->conf["imageMaxHeight"]);
+					$conf["image."]["file."]["10."]["file."]["height"] = ($this->conf["imageMaxHeight"]);
 				}
+
+				$conf["image."]["altText"] = $row["name"];
 				
-   				$conf["image."]["altText"] = $row["name"];
-   				
       			if ($row["no_tooltip"] == "0") {
 	      			if ($this->conf["activeToolTips"] && $picType == "pic_active") {  				
     	  				$conf["image."]["params"] = 'class="'.$this->prefixId.'_ToolTips"';
@@ -163,7 +171,7 @@ class tx_dgheadslist_pi1 extends tslib_pibase {
       				$conf["image."]["params"] = "";
       			}
       			
-       			$picture = $this->cObj->IMAGE($conf["image."]);
+       			$picture = $this->cObj->cObjGetSingle($conf["image"], $conf["image."]);
        			
        			// set markers
        			if ($row["link_id"]) {
@@ -200,7 +208,7 @@ class tx_dgheadslist_pi1 extends tslib_pibase {
 				$GLOBALS["TSFE"]->additionalHeaderData["tx_dgheadslist_ToolTip_conf"] = '<script type="text/javascript">window.addEvent("domready", function() {var myTips = new Tips($$(".'. $this->prefixId .'_ToolTips"));});</script>';
       			} 
       			// ende ToolTips
-		
+		}
 		
 		// Category query
 		if ($this->conf["categoryList"]) {
@@ -219,10 +227,20 @@ class tx_dgheadslist_pi1 extends tslib_pibase {
 				if ($row["uid"] == $group || $row["l18n_parent"] == $group) {
 					$listItem = $this->cObj->wrap($row["title"], $conf["currentWrap"]);
 				} else {
-					if ($row["sys_language_uid"] == "0") {
-						$listItem = $this->cObj->wrap($this->pi_linkTP($row["title"],array($this->prefixId."[group]" => $row["uid"])), $conf["linkWrap"]);
+					$cache = 1;
+					
+					if ($this->conf["backPID"]) {
+						$altPageId = $this->conf["backPID"];
+					} elseif ($conf["backPID"]) {
+						$altPageId = $conf["backPID"];
 					} else {
-						$listItem = $this->cObj->wrap($this->pi_linkTP($row["title"],array($this->prefixId."[group]" => $row["l18n_parent"])), $conf["linkWrap"]);
+						$altPageId = 0;
+					}
+					
+					if ($row["sys_language_uid"] == "0") {
+						$listItem = $this->cObj->wrap($this->pi_linkTP($row["title"],array($this->prefixId."[group]" => $row["uid"]), $cache, $altPageId), $conf["linkWrap"]);
+					} else {
+						$listItem = $this->cObj->wrap($this->pi_linkTP($row["title"],array($this->prefixId."[group]" => $row["l18n_parent"]), $cache, $altPageId), $conf["linkWrap"]);
 					}
 				}
 				$listItem = $this->cObj->wrap($listItem, $conf['categoryListItemWrap']);
