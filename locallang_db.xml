@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>database</type>
+		<description>Language labels for database tables/fields belonging to extension 'dg_headslist'</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="tt_content.list_type_pi1">heads list</label>
+			<label index="tx_dgheadslist_main">heads list data record</label>
+			<label index="tx_dgheadslist_main.pic_active">Active images:</label>
+			<label index="tx_dgheadslist_main.pic_inactive">Inactive images:</label>
+			<label index="tx_dgheadslist_main.name">Name:</label>
+			<label index="tx_dgheadslist_main.categorys">Categories:</label>
+			<label index="tx_dgheadslist_main.link_id">Link to detail page:</label>
+			<label index="tx_dgheadslist_main.no_tooltip">No tooltip for this record:</label>
+			<label index="tx_dgheadslist_cat">heads list categories</label>
+			<label index="tx_dgheadslist_cat.title">Category name:</label>
+		</languageKey>
+		<languageKey index="de" type="array">
+			<label index="tt_content.list_type_pi1">Kopfliste</label>
+			<label index="tx_dgheadslist_main">Kopfliste Datensatz</label>
+			<label index="tx_dgheadslist_main.pic_active">Aktives Bild:</label>
+			<label index="tx_dgheadslist_main.pic_inactive">Inaktives Bild:</label>
+			<label index="tx_dgheadslist_main.name">Name:</label>
+			<label index="tx_dgheadslist_main.categorys">Gruppen:</label>
+			<label index="tx_dgheadslist_main.link_id">Link zur Detailseite:</label>
+			<label index="tx_dgheadslist_main.no_tooltip">Kein Tooltip für diesen Datensatz:</label>
+			<label index="tx_dgheadslist_cat">Kopfliste Gruppen</label>
+			<label index="tx_dgheadslist_cat.title">Gruppenname:</label>
+		</languageKey>
+	</data>
+</T3locallang>
