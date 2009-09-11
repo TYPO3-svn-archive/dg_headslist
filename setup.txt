@@ -1,0 +1,45 @@
+plugin.tx_dgheadslist_pi1 {
+	#whatToDisplay = 
+	backPID =
+
+	templateFile = EXT:dg_headslist/res/headslist_templ.html
+	
+	## wraps for the records
+	recordsWrap = <div class="tx-dgheadslist-pi1_rec">|</div>
+	imageWrap = 
+	
+	## wraps for the category list
+	categoryWrap = <div class="tx-dgheadslist-pi1_cat">|</div>
+	categoryListWrap = <ul>|</ul>
+	categoryListItemWrap = <li>|</li>
+	
+	## wraps for the category links
+	linkWrap =
+	currentWrap =
+	
+	image = IMAGE
+	image.file = GIFBUILDER
+	image.file {
+		XY = [10.w],[10.h]
+		format = jpg
+		quality = 100
+		
+		10 = IMAGE
+		10.file = unknown
+		10.file.width =
+		10.file.height =
+	}
+
+	_CSS_DEFAULT_STYLE (
+		.tx-dgheadslist-pi1_rec img { border: 1px solid gray; margin-right: 5px; margin-bottom: 5px; }
+		.tx-dgheadslist-pi1_cat ul { list-style-type: none; margin: 0; padding: 0; }
+		.tx-dgheadslist-pi1_cat ul li { display: inline; padding-right: 10px; }
+		.tx-dgheadslist-pi1_cat ul li a { }
+		.tx-dgheadslist-pi1_cat ul li a:hover { text-decoration: underline; }
+		
+		/* ToolTip */
+		.tool-tip { color: #fff; z-index: 99999; background-color: #333; opacity: .9; -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=90)"; filter: alpha(opacity=90); }
+		.tool-title { font-weight: bold; font-size: 11px; margin: 0; color: #fff; padding: 4px 8px; }
+		.tool-text { font-size: 11px; padding: 4px 8px; font-weight: bold; color: #fff; }
+	)
+}
