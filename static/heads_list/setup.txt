@@ -1,21 +1,15 @@
 plugin.tx_dgheadslist_pi1 {
-	#whatToDisplay = 
-	backPID =
-
+	code = 
+	normalPID =
+	pidList = 
 	templateFile = EXT:dg_headslist/res/headslist_templ.html
 	
-	## wraps for the records
-	recordsWrap = <div class="tx-dgheadslist-pi1_rec">|</div>
 	imageWrap = 
-	
-	## wraps for the category list
-	categoryWrap = <div class="tx-dgheadslist-pi1_cat">|</div>
-	categoryListWrap = <ul>|</ul>
-	categoryListItemWrap = <li>|</li>
-	
-	## wraps for the category links
+		
+	## wraps for the group links
 	linkWrap =
 	currentWrap =
+	activeWrap =
 	
 	image = IMAGE
 	image.file = GIFBUILDER
@@ -26,16 +20,18 @@ plugin.tx_dgheadslist_pi1 {
 		
 		10 = IMAGE
 		10.file = unknown
-		10.file.width =
-		10.file.height =
+		10.file.width = 
+		10.file.height = 
 	}
+	
+	isLoaded = yes
 
 	_CSS_DEFAULT_STYLE (
 		.tx-dgheadslist-pi1_rec img { border: 1px solid gray; margin-right: 5px; margin-bottom: 5px; }
-		.tx-dgheadslist-pi1_cat ul { list-style-type: none; margin: 0; padding: 0; }
-		.tx-dgheadslist-pi1_cat ul li { display: inline; padding-right: 10px; }
-		.tx-dgheadslist-pi1_cat ul li a { }
-		.tx-dgheadslist-pi1_cat ul li a:hover { text-decoration: underline; }
+		.tx-dgheadslist-pi1_group ul { list-style-type: none; margin: 0; padding: 0; }
+		.tx-dgheadslist-pi1_group ul li { display: inline; padding-right: 10px; }
+		.tx-dgheadslist-pi1_group ul li a { }
+		.tx-dgheadslist-pi1_group ul li a:hover { text-decoration: underline; }
 		
 		/* ToolTip */
 		.tool-tip { color: #fff; z-index: 99999; background-color: #333; opacity: .9; -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=90)"; filter: alpha(opacity=90); }

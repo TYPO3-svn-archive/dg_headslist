@@ -21,6 +21,23 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   52: class tx_dgheadslist_pi1 extends tslib_pibase
+ *   65:     function main($content, $conf)
+ *  103:     function init($conf)
+ *  162:     function record_list()
+ *  259:     function group_menu()
+ *  315:     function group_link($row, $wrap)
+ *  339:     function tooltip_setup()
+ *
+ * TOTAL FUNCTIONS: 6
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
+ */
 
 require_once(PATH_tslib.'class.tslib_pibase.php');
 
@@ -46,231 +63,295 @@ class tx_dgheadslist_pi1 extends tslib_pibase {
 	 * @return	The content that is displayed on the website
 	 */
 	function main($content,$conf)	{
-		$this->conf=$conf;
-		$this->pi_setPiVarDefaults();
-		$this->pi_loadLL();
-		$this->pi_USER_INT_obj=0;	// Configuring so caching is not expected. This value means that no cHash params are ever set. We do this, because it's a USER_INT object!
-	
+		$this->init($conf);
+
 		// set Variable
-		$content="";
-		$marker = array();
-		$extUploadFolder = "uploads/tx_dgheadslist/";
+		$content='';
+		$this->extUploadFolder = 'uploads/tx_dgheadslist/';
 		
-		// load flexform
-		$this->pi_initPIflexForm();
-		$piFlexForm = $this->cObj->data['pi_flexform'];
-		foreach($piFlexForm['data'] as $sheet => $data) {
-		    foreach($data as $lang => $value) {
-				foreach($value as $key => $val) {
-				    $this->conf[$key] = $this->pi_getFFvalue($piFlexForm, $key, $sheet);
-				}
-			}
+		// test if static TS is loaded
+		if ($this->conf['isLoaded'] != 'yes') return '<H1>'.$this->pi_getLL('errorIncludeStatic').'</H1>';
+		
+		// what will be displayed
+		switch ($this->theCode) {
+			case 'NORMAL':
+				if ($this->conf['use_tooltip']) $content .= $this->tooltip_setup();
+				$content .= $this->record_list();
+				if ($this->conf['group_list']) $content .= $this->group_menu();
+				break;
+				 
+			case 'GROUPMENU':
+				$content .= $this->group_menu();
+				break;
+				 
+			default:
+				$content = '<H1>'.$this->pi_getLL('errorWhatDisplay').'</H1>';
 		}
-		
-		
-		// load template
-		if ($this->conf["template_file"]) {
-			$tmpl = $this->cObj->fileResource($this->conf["template_file"]);
-		} else {
-			$tmpl = $this->cObj->fileResource($conf["templateFile"]);
-		}
-		
-		// Sections of the templates out for the headslist
-		$tmpl_rec = $this->cObj->getSubpart($tmpl, "###HEADSLIST###");
-		$tmpl_record = $this->cObj->getSubpart($tmpl_rec, "###RECORD###");
-		
-		// Sections of the templates out for the categories
-		$tmpl_cat = $this->cObj->getSubpart($tmpl, "###HEADSLISTCAT###");
-		$tmpl_category = $this->cObj->getSubpart($tmpl_cat, "###CATEGORY###");
 
-		
-		// from which ID are the entries
-		if ($this->conf["pages"] == "") {
-			$headslistPageId = $GLOBALS["TSFE"]->id;
-		} else {
-			$headslistPageId = $this->conf["pages"];
-		}
-		
-		
-		// Extract Get parameters
-		$link_vars = t3lib_div::GPvar($this->prefixId);
-		if (is_numeric($link_vars['group']) || $link_vars['group'] == "") {
-			settype($link_vars['group'], "int");
-			$group = $link_vars['group'];
-		} else {
-			return "ERROR: <b>" .$link_vars['group']. "</b> is not a valid group ID";
-		}
-		
-		
-		// default category
-		if ($group == "" && $this->conf["defaultCategory"] ) {
-			$group = $this->conf["defaultCategory"];
-		} elseif ($group == "0") {
-			$group = "";
-		}
-		
-		
-		// check whether pictures to be displayed
-		if ($this->conf["whatToDisplay"] == "NORMAL" || $conf["whatToDisplay"] == "NORMAL") {
-		
-		//language overlay also for data records
-		if ($this->conf["langOverlay"]) {
-			$lang_overlay = 'AND sys_language_uid = '.$GLOBALS['TSFE']->config['config']['sys_language_uid'].'';
-		}
-		
-		// The database query including support for database abstraction
-		// Query for the pictures
-		if ($this->conf["inactiveImages"]) {
-			$res = $GLOBALS["TYPO3_DB"]->exec_SELECTquery('name, pic_active, pic_inactive, sys_language_uid, link_id, categorys, no_tooltip', 'tx_dgheadslist_main', 'deleted = 0 AND hidden = 0 AND pid = '.$headslistPageId.' '.$lang_overlay.'', 'sorting');
-		} else {
-			$res = $GLOBALS["TYPO3_DB"]->exec_SELECTquery("name, pic_active, pic_inactive, sys_language_uid, link_id", "tx_dgheadslist_main", "deleted = 0 AND hidden = 0 AND (categorys = '".$group."' OR categorys like ('".$group.",%') OR categorys like ('%,".$group."') OR categorys like ('%,".$group.",%')) AND pid = '".$headslistPageId."' '".$lang_overlay."'", "sorting");	
-		}
-		
-		// sys_language_mode defines what to do if the requested translation is not found
-		$this->sys_language_mode = $this->conf['sys_language_mode']?$this->conf['sys_language_mode'] : $GLOBALS['TSFE']->sys_language_mode;
-		
-			while ($row = $GLOBALS["TYPO3_DB"]->sql_fetch_assoc($res)) {
-			// Gets the translated record if the content language is not the default language
-				if ($GLOBALS["TSFE"]->sys_language_content == $row["sys_language_uid"]) {
-					$OLmode = ($this->sys_language_mode == "strict"?"hideNonTranslated":"");
-					$row = $GLOBALS["TSFE"]->sys_page->getRecordOverlay("tx_dgheadslist_main", $row, $GLOBALS["TSFE"]->sys_language_content, $OLmode);
-				}
-				
-			// get the picture			
-				if (in_array($group,split(",",$row["categorys"]))) {   // Which picture is to be used
-					$picType = "pic_active";
-				} elseif ($group == "") {
-					$picType = "pic_active";
-				} else {
-					$picType = "pic_inactive";
-				}
-			
-				$conf["image."]["file."]["10."]["file"] = $extUploadFolder . $row[$picType];
-				
-				if ($this->conf["imageMaxWidth"]) {
-					$conf["image."]["file."]["10."]["file."]["width"] = ($this->conf["imageMaxWidth"]);
-				}
-				
-				if ($this->conf["imageMaxHeight"]) {
-					$conf["image."]["file."]["10."]["file."]["height"] = ($this->conf["imageMaxHeight"]);
-				}
+		//t3lib_div::debug($this->conf, FLEXandTS);
 
-				$conf["image."]["altText"] = $row["name"];
-				
-      			if ($row["no_tooltip"] == "0") {
-	      			if ($this->conf["activeToolTips"] && $picType == "pic_active") {  				
-    	  				$conf["image."]["params"] = 'class="'.$this->prefixId.'_ToolTips"';
-	      			} elseif ($this->conf["activeToolTips"] && $picType == "pic_inactive") {
-    	  				$conf["image."]["params"] = "";
-	      			} elseif ($this->conf["useToolTips"]) {
-						$conf["image."]["params"] = 'class="'.$this->prefixId.'_ToolTips"';
-	      			} else {
-      					$conf["image."]["params"] = "";
-      				}
-      			} else {
-      				$conf["image."]["params"] = "";
-      			}
-      			
-       			$picture = $this->cObj->cObjGetSingle($conf["image"], $conf["image."]);
-       			
-       			// set markers
-       			if ($row["link_id"]) {
-       				if ($this->conf["activeLink"] && $picType == "pic_inactive") {
-    	  				$images = $picture;
-	      			} else {
-      					$images = $this->cObj->getTypoLink($picture,$row["link_id"]);
-      				}
-       			} else {
-       				$images = $picture;
-       			}
-       			$images = $this->cObj->wrap($images, $conf['imageWrap']);
-       			$marker["###IMAGES###"] = $images;
-				// Den Teilbereich ###RECORD### und das Array miteinander "vereinen"
-				$record .= $this->cObj->substituteMarkerArrayCached($tmpl_record, $marker);
-			}
-			
-      		// ToolTips setup
-      		if ($this->conf["useToolTips"]) {   				
-      			// checks if t3mootools is loaded
-				if (t3lib_extMgm::isLoaded("t3mootools"))    {
-   					require_once(t3lib_extMgm::extPath("t3mootools")."class.tx_t3mootools.php");
-				}
-				 	 
-				// if t3mootools is loaded and the custom Library had been created
-				if (defined("T3MOOTOOLS")) {
- 					tx_t3mootools::addMooJS();
-				// if none of the previous is true, you need to include your own library
-				// just as an example in this way
-				} else {
-					$GLOBALS['TSFE']->additionalHeaderData['tx_dgheadslist_ToolTip_js_mootools'] = '<script type="text/javascript" src="'. t3lib_extMgm::siteRelPath('dg_headslist') .'res/mootools.js"></script>';
-				}
-
-				$GLOBALS["TSFE"]->additionalHeaderData["tx_dgheadslist_ToolTip_conf"] = '<script type="text/javascript">window.addEvent("domready", function() {var myTips = new Tips($$(".'. $this->prefixId .'_ToolTips"));});</script>';
-      			} 
-      			// ende ToolTips
-		}
-		
-		// Category query
-		if ($this->conf["categoryList"]) {
-		$cat = $GLOBALS["TYPO3_DB"]->exec_SELECTquery("title, uid, sys_language_uid, l18n_parent", "tx_dgheadslist_cat", "deleted = 0 AND hidden = 0 AND pid = '".$headslistPageId."' AND sys_language_uid = '".$GLOBALS["TSFE"]->config["config"]["sys_language_uid"]."'", "sorting");
-		
-		// sys_language_mode defines what to do if the requested translation is not found
-		$this->sys_language_mode = $this->conf['sys_language_mode']?$this->conf['sys_language_mode'] : $GLOBALS['TSFE']->sys_language_mode;
-		
-			while ($row = $GLOBALS["TYPO3_DB"]->sql_fetch_assoc($cat)) {
-				// Gets the translated record if the content language is not the default language
-				if ($GLOBALS["TSFE"]->sys_language_content == $row["sys_language_uid"]) {
-					$OLmode = ($this->sys_language_mode == "strict"?"hideNonTranslated":"");
-					$row = $GLOBALS["TSFE"]->sys_page->getRecordOverlay("tx_dgheadslist_cat", $row, $GLOBALS["TSFE"]->sys_language_content, $OLmode);
-				}
-				
-				if ($row["uid"] == $group || $row["l18n_parent"] == $group) {
-					$listItem = $this->cObj->wrap($row["title"], $conf["currentWrap"]);
-				} else {
-					$cache = 1;
-					
-					if ($this->conf["backPID"]) {
-						$altPageId = $this->conf["backPID"];
-					} elseif ($conf["backPID"]) {
-						$altPageId = $conf["backPID"];
-					} else {
-						$altPageId = 0;
-					}
-					
-					if ($row["sys_language_uid"] == "0") {
-						$listItem = $this->cObj->wrap($this->pi_linkTP($row["title"],array($this->prefixId."[group]" => $row["uid"]), $cache, $altPageId), $conf["linkWrap"]);
-					} else {
-						$listItem = $this->cObj->wrap($this->pi_linkTP($row["title"],array($this->prefixId."[group]" => $row["l18n_parent"]), $cache, $altPageId), $conf["linkWrap"]);
-					}
-				}
-				$listItem = $this->cObj->wrap($listItem, $conf['categoryListItemWrap']);
-				$marker["###CATEGORYS###"] = $listItem;
-
-				// Den Teilbereich ###CATEGORYS### und das Array miteinander "vereinen"
-				$categorys .= $this->cObj->substituteMarkerArrayCached($tmpl_category, $marker);
-			}
-		}
-			
-		// Letztmalig den umhŸllenden Teilberich ersetzen und das Ergebnis ausgeben
-		//$record = $this->cObj->substituteSubpart($tmpl, "###RECORD###", $record);
-		//$categorys = $this->cObj->substituteSubpart($tmpl, "###CATEGORY###", $categorys);
-		
-		// show categories only if categories are available
-		if (isset($categorys) && !empty($categorys)) {	
-			$categoryList = $this->cObj->wrap($this->cObj->substituteSubpart($tmpl_cat, "###CATEGORY###", $categorys),$conf['categoryListWrap']);
-			$categoryList = $this->cObj->wrap($categoryList, $conf['categoryWrap']);
-		}
-		else {
-			$categoryList = "";
-		}
-		
-		$records = $this->cObj->substituteSubpart($tmpl_rec, "###RECORD###", $record);
-		$records = $this->cObj->wrap($records, $conf['recordsWrap']);
-		
-		$content = $records.$categoryList;
-		
 		return $this->pi_wrapInBaseClass($content);
 	}
+	
+	
+	/**
+	 * Initialize the Plugin
+	 *
+	 * @param	array	$conf: The PlugIn configuration
+	 * @return	void
+	 */
+	function init($conf) {
+
+		$this->conf = $conf;			// TypoScript configuration
+		$this->pi_setPiVarDefaults();	// GetPost-parameter configuration
+		$this->pi_loadLL();				// localized language variables
+		$this->pi_initPIflexForm();		// Initialize the FlexForms array
+
+		// load flexform in &conf only if TS code is not set
+		if (!$this->conf['code'] && $this->cObj->data['pi_flexform']) {
+			$piFlexForm = $this->cObj->data['pi_flexform'];
+			foreach($piFlexForm['data'] as $sheet => $data) {
+				foreach($data as $lang => $value) {
+					foreach($value as $key => $val) {
+						$this->conf[$key] = $this->pi_getFFvalue($piFlexForm, $key, $sheet);
+					}
+				}
+			}
+		}
+
+		// load template priority on Flexform
+		if ($this->conf['template_file']) {
+			$this->tmpl = $this->cObj->fileResource($this->conf['template_file']);
+		} else {
+			$this->tmpl = $this->cObj->fileResource($this->conf['templateFile']);
+		}
+
+		// from which ID are the entries priority on Flexform
+		if ($this->conf['storage_pid']) {
+			$this->pidList = $this->conf['storage_pid'];
+		} elseif ($this->conf['pidList']) {
+			$this->pidList = $this->conf['pidList'];
+		} else {
+			$this->pidList = $GLOBALS['TSFE']->id;
+		}
+
+		// put what to display in theCode priority on TS
+		$this->theCode = $this->conf['code'] ? $this->conf['code'] : $this->conf['what_to_display'];
+
+		// pid for NORMAL with priority on Flexform
+		$this->conf['normalPid'] = $this->conf['normal_pid'] ? $this->conf['normal_pid'] : $this->conf['normalPid'];
+
+		// load GET parameter
+		$this->currentGroup = (int) $this->piVars['group'];
+		
+		// default group
+		if ($this->currentGroup == '' && $this->conf['default_group'] ) {
+			$this->currentGroup = $this->conf['default_group'];
+		} elseif ($this->currentGroup == '0') {
+			$this->currentGroup = '';
+		}
+		
+	}	
+	
+	
+	/**
+	 * display recordlist
+	 *
+	 * @return	html code of the recordlist
+	 */
+	function record_list() {
+		// Read in the part of the template file for keyword listing
+		$template = $this->cObj->getSubpart($this->tmpl, '###HEADSLIST###');
+		// Get subpart template
+		$subTemplate = $this->cObj->getSubpart($template, '###RECORD###');
+		
+		// WHERE clause addition
+		// language overlay also for data records
+		$whereAddition .= $this->conf['lang_overlay'] ? 'AND sys_language_uid = '.$GLOBALS['TSFE']->config['config']['sys_language_uid'].'' : '';
+		// Show inactive images
+		$whereAddition .= $this->conf['inactive_images'] ? '' : ' AND (categorys = "'.$this->currentGroup.'" OR categorys like ("'.$this->currentGroup.',%") OR categorys like ("%,'.$this->currentGroup.'") OR categorys like ("%,'.$this->currentGroup.',%"))';
+		
+		// The database query including support for database abstraction
+		$select = 'name, pic_active, pic_inactive, sys_language_uid, link_id, categorys, no_tooltip';
+		$from = 'tx_dgheadslist_main';
+		$where = 'pid = '.$this->pidList.' '.$whereAddition.' '.$this->cObj->enableFields('tx_dgheadslist_main').'';
+		$groupBy = '';
+		$orderBy = 'sorting';
+		$limit = '';
+
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($select, $from, $where, $groupBy, $orderBy, $limit);
+				
+		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+			// Gets the translated record if the content language is not the default language
+			/*if ($GLOBALS['TSFE']->sys_language_content) {
+				$OLmode = ($this->sys_language_mode == 'strict' ? 'hideNonTranslated' : '');
+				$row = $GLOBALS['TSFE']->sys_page->getRecordOverlay('tx_dgheadslist_main', $row, $GLOBALS['TSFE']->sys_language_content, $OLmode);
+			}*/
+			
+			// get the image			
+			if (in_array($this->currentGroup, split(',',$row['categorys'])) || $this->currentGroup == '') {   // Which picture is to be used
+				$picType = 'pic_active';
+			} else {
+				$picType = 'pic_inactive';
+			}
+			
+			$this->conf['image.']['file.']['10.']['file'] = $this->extUploadFolder . $row[$picType];
+			
+			// image dimentions
+			if ($this->conf['image_max_width']) {
+				$this->conf['image.']['file.']['10.']['file.']['width'] = ($this->conf['image_max_width']);
+			}			
+			if ($this->conf['image_max_height']) {
+				$this->conf['image.']['file.']['10.']['file.']['height'] = ($this->conf['image_max_height']);
+			}
+			
+			$this->conf['image.']['altText'] = $row['name'];
+			
+			// ToolTip or not
+			if ($row['no_tooltip'] == '0') {
+	      		if ($this->conf['active_tooltips'] && $picType == 'pic_active') {  				
+    	  			$this->conf['image.']['params'] = 'class="'.$this->prefixId.'_ToolTips"';
+	      		} elseif ($this->conf['active_tooltip'] && $picType == 'pic_inactive') {
+    	  			$this->conf['image.']['params'] = '';
+	      		} elseif ($this->conf['use_tooltip']) {
+					$this->conf['image.']['params'] = 'class="'.$this->prefixId.'_ToolTips"';
+	      		} else {
+      				$this->conf['image.']['params'] = '';
+      			}
+    		} else {
+    			$this->conf['image.']['params'] = '';
+    		}
+      			
+       		$image = $this->cObj->cObjGetSingle($this->conf['image'], $this->conf['image.']);
+			
+       		if ($row['link_id']) {
+       			if ($this->conf['active_link'] && $picType == 'pic_inactive') {
+    	  			$imageLink = $image;
+	   			} else {
+      				if ($this->conf['link_param'] && $this->currentGroup) {
+      					//$imageLink = $this->cObj->getTypoLink($image, $row['link_id'], array($this->prefixId.'[group]' => $this->currentGroup));
+      					$imageLink = $this->pi_linkTP($image,array($this->prefixId.'[group]' => $this->currentGroup), 1, $row['link_id']);
+      				} else {
+      					$imageLink = $this->cObj->getTypoLink($image, $row['link_id']);
+      				}
+      			}
+      		} else {
+      			$imageLink = $image;
+      		}
+      		$imageLink = $this->cObj->wrap($imageLink, $this->conf['imageWrap']);
+      		
+      		$subPartContent .= $this->cObj->substituteMarker($subTemplate, '###IMAGES###', $imageLink);
+		}
+		
+		$content = $this->cObj->substituteSubpart($template, '###RECORD###', $subPartContent);
+
+		return $content;
+		
+	}
+	
+	
+	
+	/**
+	 * display groupmenu
+	 *
+	 * @return	html code of the groupmenu
+	 */
+	function group_menu() {
+		// Read in the part of the template file for keyword listing
+		$template = $this->cObj->getSubpart($this->tmpl, '###HEADSLISTGROUP###');
+		// Get subpart template
+		$subTemplate = $this->cObj->getSubpart($template, '###GROUP###');
+		
+		// The database query including support for database abstraction
+		$select = 'uid, title, sys_language_uid, l18n_parent';
+		$from = 'tx_dgheadslist_cat';
+		$where = 'sys_language_uid = '.$GLOBALS['TSFE']->config['config']['sys_language_uid'].' AND pid = '.$this->pidList.' '.$this->cObj->enableFields('tx_dgheadslist_cat').'';
+		$groupBy = '';
+		$orderBy = 'sorting';
+		$limit = '';
+
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery($select, $from, $where, $groupBy, $orderBy, $limit);
+		
+		while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)) {
+			// Gets the translated record if the content language is not the default language
+			/*if ($GLOBALS['TSFE']->sys_language_content) {
+				$OLmode = ($this->sys_language_mode == 'strict' ? 'hideNonTranslated' : '');
+				$row = $GLOBALS['TSFE']->sys_page->getRecordOverlay('tx_dgheadslist_cat', $row, $GLOBALS['TSFE']->sys_language_content, $OLmode);
+			}*/
+			
+			if ($row['uid'] == $this->currentGroup  || $row['l18n_parent'] == $this->currentGroup) {
+				if ($this->theCode == 'GROUPMENU') {
+					$listItem = $this->group_link($row, $this->conf['activeWrap']);
+				} else {
+					// wrap for current group
+					$listItem = $this->cObj->wrap($row['title'], $this->conf['currentWrap']);
+				}
+				
+			} else {
+				$listItem = $this->group_link($row, $this->conf['linkWrap']);
+			}
+						
+			$subPartContent .= $this->cObj->substituteMarker($subTemplate, '###GROUPITEM###', $listItem);
+		}
+
+		// show groups only if groups are available
+		if (isset($subPartContent) && !empty($subPartContent)) {
+			$content = $this->cObj->substituteSubpart($template, '###GROUP###', $subPartContent);
+		} else {
+			$content = '';
+		}
+		
+		return $content;
+	}
+	
+	
+	/**
+	 * link for groupmenu
+	 *
+	 * @param	array	$row: database record
+	 * @param	array	$wrap: wrap for the link
+	 * @return	html code of the groupmenu links
+	 */
+	function group_link($row, $wrap) {
+		// some parameter for link
+		$altPageId = $this->conf['normalPid'] ? $this->conf['normalPid'] : '';
+		$groupPrefix = $row['sys_language_uid'] == '0' ? $row['uid'] : $row['l18n_parent'];
+		
+		// the link it self
+		$link = $this->pi_linkTP($row['title'],array($this->prefixId.'[group]' => $groupPrefix), 1, $altPageId);
+		
+		// title parameter for link
+		$params = array('title' => $row['title']);
+		$link = $this->cObj->addParams($link, $params);
+		
+		// wrap for link
+		$link = $this->cObj->wrap($link, $wrap);
+		
+		return $link;
+	}
+		
+		
+	/**
+	 * ToolTip setup
+	 *
+	 * @return	void
+	 */
+	function tooltip_setup() {
+    	// checks if t3mootools is loaded
+		if (t3lib_extMgm::isLoaded('t3mootools')) require_once(t3lib_extMgm::extPath('t3mootools').'class.tx_t3mootools.php');
+				 	 
+		// if t3mootools is loaded and the custom Library had been created
+		if (defined('T3MOOTOOLS')) {
+ 			tx_t3mootools::addMooJS();
+		// if none of the previous is true, you need to include your own library
+		// just as an example in this way
+		} else {
+			$GLOBALS['TSFE']->additionalHeaderData['tx_dgheadslist_ToolTip_js_mootools'] = '<script type="text/javascript" src="'. t3lib_extMgm::siteRelPath('dg_headslist') .'res/mootools.js"></script>';
+		}
+
+		$GLOBALS['TSFE']->additionalHeaderData['tx_dgheadslist_ToolTip_conf'] = '<script type="text/javascript">window.addEvent("domready", function() {var myTips = new Tips($$(".'. $this->prefixId .'_ToolTips"));});</script>';
+	} 
+	
 }
 
 

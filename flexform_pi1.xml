@@ -3,14 +3,14 @@
 	<langDisable>1</langDisable>
 </meta>
   <sheets>
-	<s_general>
+	<sDEF>
 		<ROOT>
 			<TCEforms>
-				<sheetTitle>LLL:EXT:dg_headslist/locallang.xml:pi_flexform.sheet_template</sheetTitle>
+				<sheetTitle>LLL:EXT:dg_headslist/locallang.xml:pi_flexform.sdef</sheetTitle>
 			</TCEforms>
 			<type>array</type>
 			<el>
-				<whatToDisplay>
+				<what_to_display>
 					<TCEforms>
 						<label>LLL:EXT:dg_headslist/locallang.xml:pi_flexform.what_to_display</label>
 						<config>
@@ -21,38 +21,16 @@
 								<numIndex index="1">NORMAL</numIndex>
 							</numIndex>
 							<numIndex index="1" type="array">
-								<numIndex index="0">CATEGORYLIST</numIndex>
-								<numIndex index="1">CATEGORYLIST</numIndex>
+								<numIndex index="0">GROUPMENU</numIndex>
+								<numIndex index="1">GROUPMENU</numIndex>
 							</numIndex>
 							</items>
 							<maxitems>1</maxitems>
 							<size>1</size>
 						</config>
 					</TCEforms>
-				</whatToDisplay>
-				<imageMaxWidth>
-					<TCEforms>
-						<label>LLL:EXT:dg_headslist/locallang.xml:pi_flexform.imageWidth</label>
-						<config>
-							<type>input</type>
-							<eval>num</eval>
-							<checkbox></checkbox>
-							<size>5</size>
-						</config>
-					</TCEforms>
-				</imageMaxWidth>
-				<imageMaxHeight>
-					<TCEforms>
-						<label>LLL:EXT:dg_headslist/locallang.xml:pi_flexform.imageHeight</label>
-						<config>
-							<type>input</type>
-							<eval>num</eval>
-							<checkbox></checkbox>
-							<size>5</size>
-						</config>
-					</TCEforms>
-				</imageMaxHeight>
-				<pages>
+				</what_to_display>
+				<storage_pid>
 					<TCEforms>
 						<exclude>1</exclude>
 						<label>LLL:EXT:lang/locallang_general.php:LGL.startingpoint</label>
@@ -66,56 +44,78 @@
 							<show_thumbs>1</show_thumbs>
 						</config>
 					</TCEforms>
-				</pages>
-				<defaultCategory>
+				</storage_pid>
+				<image_max_width>
 					<TCEforms>
-						<label>LLL:EXT:dg_headslist/locallang.xml:pi_flexform.defaultCategory</label>
+						<label>LLL:EXT:dg_headslist/locallang.xml:pi_flexform.image_max_width</label>
+						<config>
+							<type>input</type>
+							<eval>num</eval>
+							<checkbox></checkbox>
+							<size>5</size>
+						</config>
+					</TCEforms>
+				</image_max_width>
+				<image_max_height>
+					<TCEforms>
+						<label>LLL:EXT:dg_headslist/locallang.xml:pi_flexform.image_max_height</label>
+						<config>
+							<type>input</type>
+							<eval>num</eval>
+							<checkbox></checkbox>
+							<size>5</size>
+						</config>
+					</TCEforms>
+				</image_max_height>
+				<default_group>
+					<TCEforms>
+						<label>LLL:EXT:dg_headslist/locallang.xml:pi_flexform.default_group</label>
 						<config>
 					    	<type>select</type>
-					    	<itemsProcFunc>tx_dgheadslist_addCategoriesToFlexForm->addCategories</itemsProcFunc>
+					    	<itemsProcFunc>tx_dgheadslist_addGroupsToFlexForm->addGroups</itemsProcFunc>
 					    </config>
 					</TCEforms>
-				</defaultCategory>
-				<categoryList>
+				</default_group>
+				<group_list>
 					<TCEforms>
-						<label>LLL:EXT:dg_headslist/locallang.xml:pi_flexform.categoryList</label>
+						<label>LLL:EXT:dg_headslist/locallang.xml:pi_flexform.group_list</label>
 						<config>
 							<default>1</default>
 							<type>check</type>
 						</config>
 					</TCEforms>
-				</categoryList>
-				<inactiveImages>
+				</group_list>
+				<inactive_images>
 					<TCEforms>
-						<label>LLL:EXT:dg_headslist/locallang.xml:pi_flexform.inactiveImages</label>
+						<label>LLL:EXT:dg_headslist/locallang.xml:pi_flexform.inactive_images</label>
 						<config>
 							<default>1</default>
 							<type>check</type>
 						</config>
 					</TCEforms>
-				</inactiveImages>
-				<activeLink>
+				</inactive_images>
+				<active_link>
 					<TCEforms>
-						<label>LLL:EXT:dg_headslist/locallang.xml:pi_flexform.activeLink</label>
+						<label>LLL:EXT:dg_headslist/locallang.xml:pi_flexform.active_link</label>
 						<config>
 							<default>0</default>
 							<type>check</type>
 						</config>
 					</TCEforms>
-				</activeLink>
-				<langOverlay>
+				</active_link>
+				<lang_overlay>
 					<TCEforms>
-						<label>LLL:EXT:dg_headslist/locallang.xml:pi_flexform.langOverlay</label>
+						<label>LLL:EXT:dg_headslist/locallang.xml:pi_flexform.lang_overlay</label>
 						<config>
 							<default>0</default>
 							<type>check</type>
 						</config>
 					</TCEforms>
-				</langOverlay>
-				<backPID>
+				</lang_overlay>
+				<normal_pid>
 					<TCEforms>
 					<exclude>1</exclude>
-					<label>LLL:EXT:dg_headslist/locallang.xml:pi_flexform.BackPID</label>
+					<label>LLL:EXT:dg_headslist/locallang.xml:pi_flexform.normal_pid</label>
 					<config>
 						<type>group</type>
 						<internal_type>db</internal_type>
@@ -126,7 +126,16 @@
 						<show_thumbs>1</show_thumbs>
 					</config>
 					</TCEforms>
-				</backPID>
+				</normal_pid>
+				<link_param>
+					<TCEforms>
+						<label>LLL:EXT:dg_headslist/locallang.xml:pi_flexform.link_param</label>
+						<config>
+							<default>0</default>
+							<type>check</type>
+						</config>
+					</TCEforms>
+				</link_param>
 				<template_file>
 					<TCEforms>
 						<label>LLL:EXT:dg_headslist/locallang.xml:pi_flexform.template_file_ref</label>
@@ -151,34 +160,34 @@
 				</template_file>
 			</el>
 		</ROOT>
-	</s_general>
-	<s_tooltip>
+	</sDEF>
+	<sTIP>
 		<ROOT>
 			<TCEforms>
-				<sheetTitle>LLL:EXT:dg_headslist/locallang.xml:pi_flexform.sheet_tooltip</sheetTitle>
+				<sheetTitle>LLL:EXT:dg_headslist/locallang.xml:pi_flexform.stip</sheetTitle>
 			</TCEforms>
 			<type>array</type>
 			<el>
-				<useToolTips>
+				<use_tooltip>
 					<TCEforms>
-						<label>LLL:EXT:dg_headslist/locallang.xml:pi_flexform.useTips</label>
+						<label>LLL:EXT:dg_headslist/locallang.xml:pi_flexform.use_tooltip</label>
 						<config>
 							<default>1</default>
 							<type>check</type>
 						</config>
 					</TCEforms>
-				</useToolTips>
-				<activeToolTips>
+				</use_tooltip>
+				<active_tooltip>
 					<TCEforms>
-						<label>LLL:EXT:dg_headslist/locallang.xml:pi_flexform.activeToolTips</label>
+						<label>LLL:EXT:dg_headslist/locallang.xml:pi_flexform.active_tooltip</label>
 						<config>
 							<default>0</default>
 							<type>check</type>
 						</config>
 					</TCEforms>
-				</activeToolTips>
+				</active_tooltip>
 			</el>
 		</ROOT>
-	</s_tooltip>
+	</sTIP>
 </sheets>
 </T3DataStructure>
