@@ -30,9 +30,9 @@
  *   65:     function main($content, $conf)
  *  103:     function init($conf)
  *  162:     function record_list()
- *  259:     function group_menu()
- *  315:     function group_link($row, $wrap)
- *  339:     function tooltip_setup()
+ *  268:     function group_menu()
+ *  325:     function group_link($row, $wrap)
+ *  349:     function tooltip_setup()
  *
  * TOTAL FUNCTIONS: 6
  * (This index is automatically created/updated by the extension "extdeveval")
@@ -224,25 +224,34 @@ class tx_dgheadslist_pi1 extends tslib_pibase {
       			
        		$image = $this->cObj->cObjGetSingle($this->conf['image'], $this->conf['image.']);
 			
+       		// define link for an image
        		if ($row['link_id']) {
        			if ($this->conf['active_link'] && $picType == 'pic_inactive') {
     	  			$imageLink = $image;
 	   			} else {
       				if ($this->conf['link_param'] && $this->currentGroup) {
+      					
+      					// image link with params
       					//$imageLink = $this->cObj->getTypoLink($image, $row['link_id'], array($this->prefixId.'[group]' => $this->currentGroup));
       					$imageLink = $this->pi_linkTP($image,array($this->prefixId.'[group]' => $this->currentGroup), 1, $row['link_id']);
       				} else {
+      					
+      					// normal image link
       					$imageLink = $this->cObj->getTypoLink($image, $row['link_id']);
       				}
       			}
       		} else {
       			$imageLink = $image;
       		}
+      		
+      		// image wrap
       		$imageLink = $this->cObj->wrap($imageLink, $this->conf['imageWrap']);
       		
+      		// substitute marker
       		$subPartContent .= $this->cObj->substituteMarker($subTemplate, '###IMAGES###', $imageLink);
 		}
 		
+		// substitute subpart
 		$content = $this->cObj->substituteSubpart($template, '###RECORD###', $subPartContent);
 
 		return $content;
@@ -290,7 +299,8 @@ class tx_dgheadslist_pi1 extends tslib_pibase {
 			} else {
 				$listItem = $this->group_link($row, $this->conf['linkWrap']);
 			}
-						
+
+			// subtitute marker
 			$subPartContent .= $this->cObj->substituteMarker($subTemplate, '###GROUPITEM###', $listItem);
 		}
 
