@@ -8,38 +8,42 @@
 		<languageKey index="default" type="array">
 			<label index="pi1_title">heads list</label>
 			<label index="pi1_plus_wiz_description">shows the heads list.</label>
-			<label index="pi_flexform.sheet_template">General adjustments</label>
-			<label index="pi_flexform.what_to_display">What to display:</label>
-			<label index="pi_flexform.imageWidth">max. Image width:</label>
-			<label index="pi_flexform.imageHeight">max. Image height:</label>
-			<label index="pi_flexform.defaultCategory">Default category:</label>
-			<label index="pi_flexform.inactiveImages">Show inactive images:</label>
-			<label index="pi_flexform.activeLink">Links only on active images:</label>
-			<label index="pi_flexform.categoryList">Show categorylist:</label>
-			<label index="pi_flexform.langOverlay">Use language overlay also for data records:</label>
-			<label index="pi_flexform.BackPID">PageID to NORMAL: (for CATEGORYLIST)</label>
-			<label index="pi_flexform.template_file_ref">Template:</label>
-			<label index="pi_flexform.sheet_tooltip">ToolTip</label>
-			<label index="pi_flexform.useTips">Use ToolTips:</label>
-			<label index="pi_flexform.activeToolTips">ToolTips only for active images:</label>
+			<label index="cms_layout.mode">Displaying: %s</label>
+			<label index="cms_layout.not_configured">Plugin is not configured!</label>
+			<label index="pi_flexform.sdef">General adjustments</label>
+				<label index="pi_flexform.what_to_display">What to display:</label>
+				<label index="pi_flexform.image_max_width">max. Image width:</label>
+				<label index="pi_flexform.image_max_height">max. Image height:</label>
+				<label index="pi_flexform.default_group">Default category:</label>
+				<label index="pi_flexform.inactive_images">Show inactive images:</label>
+				<label index="pi_flexform.active_link">Links only on active images:</label>
+				<label index="pi_flexform.group_list">Show grouplist:</label>
+				<label index="pi_flexform.lang_overlay">Use language overlay also for data records:</label>
+				<label index="pi_flexform.normal_pid">PageID to NORMAL: (for GROUPMENU)</label>
+				<label index="pi_flexform.link_param">Put link parameter on data record links:</label>
+				<label index="pi_flexform.template_file_ref">Template:</label>
+			<label index="pi_flexform.stip">ToolTip</label>
+				<label index="pi_flexform.use_tooltip">Use ToolTips:</label>
+				<label index="pi_flexform.active_tooltip">ToolTips only for active images:</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="pi1_title">Kopfliste</label>
 			<label index="pi1_plus_wiz_description">Zeigt die Kopfliste an.</label>
-			<label index="pi_flexform.sheet_template">Allgemeine Einstellungen</label>
-			<label index="pi_flexform.what_to_display">Was soll angezeigt werden:</label>
-			<label index="pi_flexform.imageWidth">Maximale Breite für Bilder:</label>
-			<label index="pi_flexform.imageHeight">Maximale Höhe für Bilder:</label>
-			<label index="pi_flexform.defaultCategory">Standardgruppe:</label>
-			<label index="pi_flexform.inactiveImages">Inaktive Bilder anzeigen:</label>
-			<label index="pi_flexform.activeLink">Link nur auf aktive Bilder:</label>
-			<label index="pi_flexform.categoryList">Gruppenliste zeigen:</label>
-			<label index="pi_flexform.langOverlay">Mehrsprachigkeit auch für Datensätze verwenden:</label>
-			<label index="pi_flexform.BackPID">PageID zu NORMAL: (für CATEGORYLIST)</label>
-			<label index="pi_flexform.template_file_ref">Template:</label>
-			<label index="pi_flexform.sheet_tooltip">ToolTip</label>
-			<label index="pi_flexform.useTips">ToolTips verwenden:</label>
-			<label index="pi_flexform.activeToolTips">ToolTips nur für aktive Bilder:</label>
+			<label index="pi_flexform.sdef">Allgemeine Einstellungen</label>
+				<label index="pi_flexform.what_to_display">Was soll angezeigt werden:</label>
+				<label index="pi_flexform.image_max_width">Maximale Breite für Bilder:</label>
+				<label index="pi_flexform.image_max_height">Maximale Höhe für Bilder:</label>
+				<label index="pi_flexform.default_group">Standardgruppe:</label>
+				<label index="pi_flexform.inactive_images">Inaktive Bilder anzeigen:</label>
+				<label index="pi_flexform.active_link">Link nur auf aktive Bilder:</label>
+				<label index="pi_flexform.group_list">Gruppenliste zeigen:</label>
+				<label index="pi_flexform.lang_overlay">Mehrsprachigkeit auch für Datensätze verwenden:</label>
+				<label index="pi_flexform.normal_pid">PageID zu NORMAL: (für GROUPMENU)</label>
+				<label index="pi_flexform.link_param">Link Parameter an Datensatz links anfügen:</label>
+				<label index="pi_flexform.template_file_ref">Template:</label>
+			<label index="pi_flexform.stip">ToolTip</label>
+				<label index="pi_flexform.use_tooltip">ToolTips verwenden:</label>
+				<label index="pi_flexform.active_tooltip">ToolTips nur für aktive Bilder:</label>
 		</languageKey>
 	</data>
 </T3locallang>

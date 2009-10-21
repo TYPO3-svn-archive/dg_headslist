@@ -6,10 +6,12 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
-			<label index="XXXXXXXX">XXXXXXX</label>
+			<label index="errorIncludeStatic">ERROR: You must include static TS "heads_list" for any output</label>
+			<label index="errorWhatDisplay">ERROR: Select a display type. Chose from flexform or type in TS-setup; NORMAL or GROUPMENU. For more information look at the manual</label>
 		</languageKey>
 		<languageKey index="de" type="array">
-			<label index="XXXXXXXX">XXXXXXX</label>
+			<label index="errorIncludeStatic">ERROR: You must include static TS "heads_list" for any output</label>
+			<label index="errorWhatDisplay">ERROR: Select a display type. Chose from flexform or type in TS-setup; NORMAL or GROUPMENU. For more information look at the manual</label>
 		</languageKey>
 	</data>
 </T3locallang>
