@@ -1,6 +1,6 @@
 plugin.tx_dgheadslist_pi1 {
 	code = 
-	normalPID =
+	normalPid =
 	pidList = 
 	templateFile = EXT:dg_headslist/res/headslist_templ.html
 	

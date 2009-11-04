@@ -14,7 +14,7 @@
 				<label index="pi_flexform.what_to_display">What to display:</label>
 				<label index="pi_flexform.image_max_width">max. Image width:</label>
 				<label index="pi_flexform.image_max_height">max. Image height:</label>
-				<label index="pi_flexform.default_group">Default category:</label>
+				<label index="pi_flexform.default_group">Default group:</label>
 				<label index="pi_flexform.inactive_images">Show inactive images:</label>
 				<label index="pi_flexform.active_link">Links only on active images:</label>
 				<label index="pi_flexform.group_list">Show grouplist:</label>
