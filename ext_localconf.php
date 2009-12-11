@@ -13,4 +13,7 @@ t3lib_extMgm::addUserTSConfig('
 t3lib_extMgm::addUserTSConfig('
 	options.saveDocNew.tx_dgheadslist_cat=1
 ');
+
+// Page module hook
+$TYPO3_CONF_VARS['SC_OPTIONS']['cms/layout/class.tx_cms_layout.php']['list_type_Info']['dg_headslist_pi1'][] = 'EXT:dg_headslist/class.backendPreview.php:&tx_backendPreviewHeads->main';
 ?>

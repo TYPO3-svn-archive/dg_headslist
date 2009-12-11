@@ -21,9 +21,9 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-class tx_dgheadslist_addCategoriesToFlexForm {
+class tx_dgheadslist_addGroupsToFlexForm {
 	
-	function addCategories ($config) {
+	function addGroups ($config) {
 		$optionList = array();
 
 		$res = mysql_query("SELECT uid,title FROM tx_dgheadslist_cat WHERE hidden=0 AND deleted=0 ORDER BY sorting");	

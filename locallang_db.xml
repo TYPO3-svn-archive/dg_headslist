@@ -11,11 +11,11 @@
 			<label index="tx_dgheadslist_main.pic_active">Active images:</label>
 			<label index="tx_dgheadslist_main.pic_inactive">Inactive images:</label>
 			<label index="tx_dgheadslist_main.name">Name:</label>
-			<label index="tx_dgheadslist_main.categorys">Categories:</label>
+			<label index="tx_dgheadslist_main.categorys">Groups:</label>
 			<label index="tx_dgheadslist_main.link_id">Link to detail page:</label>
 			<label index="tx_dgheadslist_main.no_tooltip">No tooltip for this record:</label>
-			<label index="tx_dgheadslist_cat">heads list categories</label>
-			<label index="tx_dgheadslist_cat.title">Category name:</label>
+			<label index="tx_dgheadslist_cat">heads list groups</label>
+			<label index="tx_dgheadslist_cat.title">Group name:</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="tt_content.list_type_pi1">Kopfliste</label>
