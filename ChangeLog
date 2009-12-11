@@ -1,8 +1,22 @@
 (add new changes on top of this file)
 
+09-12-02 Dennis
+	* added "What to display" to chose NORMAL or GROUPMENU.
+	* added "PageID to NORMAL"
+	* added "Put link parameter on data record links"
+	* remove "Own css"
+	* remove "Own ToolTips css"
+	* added TS configuration
+	* added static TS
+	* move default css to static TS
+	* php code completely rewritten
+	* renamed many FlexForm options
+
+
 08-12-08 Dennis
 
 	* added support of workspaces, but changes are not shown in workspace preview.
+
 
 08-12-01 Dennis
 
